@@ -1,0 +1,45 @@
+
+Ip address 127.0.0.1
+
+What data is being sent to the other computer? 
+Transmitting packets
+
+Open the "Internet Protocol Version 4" section - what is the source address, the destination address? 
+Source address is 10.17.212.167
+Destination address is 172.20.120.20
+
+Open the Data section - how do the integer values compare with the ASCII that is displayed in the terminal? Does it match anything that we have seen before?
+The format we see in see in the DATA section is in hexadecimal
+The format in the terminal is in ASCII and displayed in English
+Each one is 4 bits
+
+
+How long does it take a ping packet to travel to your classmate's machine and back? Try ping google.com. How long does it take these ping packets to travel?  Try ping www.louvre.fr. How long does this take? What do these numbers tell you?
+To ping my system it takes 0.211ms
+To ping google it took 6.714ms
+To ping the Louvre it took 149.264ms
+These numbers tell me that the further away the IP address location, the longer it takes for the ping to go through. 
+
+HTTP
+After using the tcp.port == 80 filter, three source and destination addresses occurred
+
+
+Did you see more than you expected in the output? Can you figure out what other data was sent/received?
+
+
+Try doing the same experiment again, but instead of opening example.com in a web browser, use the command line tool curl. Type man curl at the command prompt - what is the purpose of the curl program? Now run curl example.com while Wireshark is recording.
+Curl is a command line tool that enables data exchange between a device and a server through a terminal
+
+
+How are your results different / similar?
+They are similar
+More HTTP protocols are present
+
+
+Finally, try going to http://github.com using Safari or Firefox (not Chrome! It does its own weird thing), and see what happens. (What URL actually show's up when GitHub is loaded? It's not exactly what you typed in.) Can you understand the output from Wireshark? Why can you only read the first couple of messages?
+Opened http://GitHub.com in Safari
+The http won't show up it goes to https because it is a secure sight
+There is something that shows up on Wireshark but it is encrypted because Github is a secure site
+
+
+

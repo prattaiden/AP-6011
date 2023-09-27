@@ -112,10 +112,12 @@ public class Fraction {
    _denominator = temp;
 
    return new Fraction(_numerator, _denominator);
+   //return new Fraction(_denominator, _numerator);
 
     }
 
     //converting the fraction to a string
+    //overloading the toString method
     public String toString(){
     return _numerator + "/" + _denominator;
     }

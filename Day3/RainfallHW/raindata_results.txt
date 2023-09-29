@@ -1,0 +1,24 @@
+The average rainfall amount for January is 4.3020000000000005 inches
+
+The average rainfall amount for February is 4.227000000000001 inches
+
+The average rainfall amount for March is 4.801 inches
+
+The average rainfall amount for April is 3.5765000000000002 inches
+
+The average rainfall amount for May is 3.5885 inches
+
+The average rainfall amount for June is 4.276 inches
+
+The average rainfall amount for July is 4.3615 inches
+
+The average rainfall amount for August is 4.078999999999999 inches
+
+The average rainfall amount for September is 3.8020000000000005 inches
+
+The average rainfall amount for October is 2.7585 inches
+
+The average rainfall amount for November is 3.7269999999999994 inches
+
+The average rainfall amount for December is 4.6850000000000005 inches
+

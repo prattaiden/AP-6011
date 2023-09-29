@@ -96,9 +96,9 @@ public class Fraction {
     //returning a new fraction with the results
     public Fraction divide(Fraction rhs){
         long resultNum, resultDen;
-        rhs.reciprocal();
-        resultNum = _numerator * rhs._numerator;
-        resultDen = _denominator * rhs._denominator;
+        Fraction rhs1 =  rhs.reciprocal();
+        resultNum = _numerator * rhs1._numerator;
+        resultDen = _denominator * rhs1._denominator;
 
         return new Fraction(resultNum, resultDen);
     }
@@ -106,13 +106,13 @@ public class Fraction {
     //RECIPROCAL
     //swapping the denominator and the numerator
     public Fraction reciprocal(){
-    long temp = 0;
-   temp = _numerator;
-   _numerator = _denominator;
-   _denominator = temp;
-
-   return new Fraction(_numerator, _denominator);
-   //return new Fraction(_denominator, _numerator);
+//    long temp = 0;
+//   temp = _numerator;
+//   _numerator = _denominator;
+//   _denominator = temp;
+//
+//   return new Fraction(_numerator, _denominator);
+   return new Fraction(_denominator, _numerator);
 
     }
 
@@ -124,7 +124,7 @@ public class Fraction {
 
     //converting the fraction to a double
     public double toDouble(){
-        return (double) _numerator / _denominator;
+        return (double)_numerator / _denominator;
     }
 
     //PRIVATE VARIABLES
@@ -140,17 +140,17 @@ public class Fraction {
     //saving long variable remainder as denominator
     //
     private long gcd(long n, long d) {
-        long _gcd = _numerator;
+        long gcd = _numerator;
         long remainder = _denominator;
         while (remainder != 0) {
             long temp = remainder;
-            remainder = _gcd % remainder;
-            _gcd = temp;
+            remainder = gcd % remainder;
+            gcd = temp;
         }
-        if (_gcd <0){
-            _gcd= _gcd * -1;
+        if (gcd <0){
+            gcd= gcd * -1;
         }
-        return (long) _gcd;
+        return gcd;
     }
 
     //reduce function

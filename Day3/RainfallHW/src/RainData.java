@@ -7,7 +7,6 @@ import java.util.Scanner;
 //RainData Class
 public class RainData {
     private String path;
-    private String path2;
 
     //constructor
     RainData(String path) {
@@ -89,6 +88,7 @@ public class RainData {
 
         for (int i = 0; i < MonthString.size(); i++) {
 
+            //iff statements to get the sum
             if (MonthString.get(i).equals("January")) {
                 janSum += RainfallDouble.get(i);
             } else if (MonthString.get(i).equals("February")) {
@@ -115,7 +115,6 @@ public class RainData {
                 decSum += RainfallDouble.get(i);
             }
         }
-
         janAvg = janSum / 20;
         febAvg = febSum / 20;
         marAvg = marSum / 20;

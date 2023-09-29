@@ -12,6 +12,7 @@ class FractionTest {
         testNegatives();
         testMinus();
         testPlus();
+        testDenominatorZero();
     }
 
     @Test
@@ -73,4 +74,14 @@ class FractionTest {
         Assertions.assertEquals( f1double, 2.0 );
     }
 
+    @Test
+    public void testDenominatorZero() {
+        try {
+            Fraction f1 = new Fraction(10, 0);
+        }
+        catch(Exception e){
+            System.out.println("Denominator cannot be zero.");
+        }
+    }
 }
+

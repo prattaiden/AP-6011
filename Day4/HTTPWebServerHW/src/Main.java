@@ -53,6 +53,11 @@ public class Main {
                 OutputStream outputStream = client.getOutputStream();
                 PrintWriter printWriter = new PrintWriter(outputStream);
 
+
+
+                //IF STATEMENT FOR IF THE FILE EXISTS
+                //IF NOT SEND STRING HTML FOR 404 ERROR Code
+
                 // if statements to find what the extension on the files is
                 //get Bytes?
                 //checking for html, css, and jepg because those are present in my html file

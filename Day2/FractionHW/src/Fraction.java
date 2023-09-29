@@ -14,10 +14,16 @@ public class Fraction {
 
         _numerator = n;
         _denominator = d;
-        //throwing an error if denominator is 0
-        if (_denominator == 0) throw new AssertionError();
 
-       // if statement to correct the location of - sign
+        //throwing an error if denominator is 0
+        //try catch
+        if (_denominator == 0) try {
+            throw new Exception();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        // if statement to correct the location of - sign
         if(_denominator < 0){
             _numerator = _numerator * -1;
             _denominator = _denominator * -1;

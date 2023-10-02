@@ -55,14 +55,7 @@ public class Main {
                 PrintWriter printWriter = new PrintWriter(outputStream);
 
 
-
                 //IF STATEMENT FOR IF THE FILE EXISTS
-                //IF NOT SEND STRING HTML FOR 404 ERROR Code
-
-                // if statements to find what the extension on the files is
-                //get Bytes?
-                //checking for html, css, and jepg because those are present in my html file
-                //what if there are other things?
                 if (extension.equals("html")) {
                     outputStream.write("HTTP/1.1 200 OK\n".getBytes());
                     outputStream.write("Content-type: text/html\n".getBytes());
@@ -77,7 +70,7 @@ public class Main {
                 }
                 outputStream.write("\n".getBytes());
 
-                //?
+
                 fileStream.transferTo(outputStream);
 
                 outputStream.flush();
@@ -90,7 +83,3 @@ public class Main {
 
 
 }
-
-
-//old line of code attempted below
-//  outStream.write("Content-type: text/" + extension + "\n");

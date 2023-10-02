@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fa40cf69-78ce-4b26-8c6b-58f7981d616c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/Resources/error.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HTTPRefactor.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/HTTPRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/HTTPResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/src/main/java/com/example/synthesizer/AudioClip.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/src/main/java/com/example/synthesizer/AudioComponent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/src/main/java/com/example/synthesizer/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/src/main/java/com/example/synthesizer/SineWave.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Day6/Synthesizer/src/test/java/com/example/synthesizer/AudioClipTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day2/FractionHW/src/Fraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Day2/FractionHW/src/Fraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day2/FractionHW/src/FractionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Day2/FractionHW/src/FractionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/millycloud.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/src/FileInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/src/HTTPInput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/src/HTTPoutput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day4/HTTPWebServerHW/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Day4/extra main copy/Main.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2WDfylc9DQAoQNSHr9knJ0XAA7F" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "onboarding.tips.debug.path": "/Users/aidenpratt/Documents/AP-6011/Day5/HTTPRefactor/src/Main.java",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fa40cf69-78ce-4b26-8c6b-58f7981d616c" name="Changes" comment="" />
+      <created>1696272328993</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1696272328993</updated>
+      <workItem from="1696272331173" duration="3573000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

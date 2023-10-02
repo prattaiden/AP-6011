@@ -1,4 +1,4 @@
-public class Fraction {
+public class Fraction implements Comparable<Fraction> {
 
   //Empty Constructor
     public  Fraction(){
@@ -168,6 +168,17 @@ public class Fraction {
        _denominator /= GCD_;
        _remainder = _numerator % _denominator;
        _realRepresentation =  (_numerator) / (_denominator);
+    }
+
+    public int compareTo(Fraction rhs){
+        //lhsbigger
+        if((minus(rhs).toDouble()>0)){
+            return 1;
+        }
+        else if(minus(rhs).toDouble()<=0){
+            return -1;
+        }
+        return 0;
     }
 
 }

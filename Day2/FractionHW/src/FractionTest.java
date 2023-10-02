@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 class FractionTest {
 
@@ -83,5 +86,16 @@ class FractionTest {
             System.out.println("Denominator cannot be zero.");
         }
     }
+
+    @Test
+    public void testCompareTo(){
+        ArrayList<Fraction> al = new ArrayList<Fraction>();
+        al.add(new Fraction(2, 1));
+        al.add(new Fraction(3, 8));
+        al.add(new Fraction(4, 9));
+
+        Collections.sort(al);
+    }
+
 }
 

@@ -2,33 +2,38 @@ package com.example.synthesizer;
 
 public class SineWave implements AudioComponent {
 
-    //Constructor  for sinewave
-    SineWave(){
-        double frequency = 0.0d;
-        //amplitude
-        //rate
-    }
     double frequency;
+    double sampleRate = 44100;
 
-    AudioClip getClip(){
+    //Constructor  for sinewave
+    public SineWave(double freq){
+        this.frequency=freq;
+
+    }
+
+    public AudioClip getClip(){
         AudioClip clipTest = new AudioClip();
-        for (int i = 0; i < clipTest.audioClipArray.length; i++){
-
-
-            clipTest.audioClipArray[i] = (byte) ((byte) Short.MAX_VALUE * Math.sin
-            (2 * Math.PI * frequency * i / clipTest._sampleRate));
+        int result = 0;
+        //set array of bytes
+        for (int i = 0; i < AudioClip.TOTAL_SAMPLES; i++){
+            //fill the array with the formula
+            result = (int) (Short.MAX_VALUE * Math.sin(2 * Math.PI * frequency * i / sampleRate));
+                    clipTest.setSample(i, result);
         }
+
         return clipTest;
     }
         //sample[ i ] = maxValue * sine( 2*pi*frequency * i / sampleRate );
 
-    }
-    boolean hasInput(){
+
+    @Override
+    public boolean hasInput(){
         return true;
     }
 
-    void connectInput(AudioComponent input){
+    public void connectInput(AudioComponent input){
 
+        //if my array has input, then set has input to true
     }
 
 }

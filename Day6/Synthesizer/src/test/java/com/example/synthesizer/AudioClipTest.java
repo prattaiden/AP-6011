@@ -5,42 +5,30 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AudioClipTest {
 
 
-
+    AudioClip testclip = new AudioClip();
     @Test
-    public void Tests(){
-        int[] test = new int[];
-        Random random = new Random();
-        for (int i = 0; i < test.length; i++) {
-            test[i] = (random.nextInt(32767));
+    public void TestsGetandSet() {
+         //ArrayList<Integer> test = new ArrayList<>();
 
-            AudioClip clip = new AudioClip();
-            Assertions.assertEquals(clip.getSample(test[i]));
+        testclip.setSample(1, 5);
+        testclip.getSample(1);
+        Assertions.assertEquals(5, 5);
+
+        for( int i = Short.MIN_VALUE ; i < Short.MAX_VALUE; i++){
+            int index = 0;
+            testclip.setSample(index, i);
+            int get = testclip.getSample(index);
+            Assertions.assertEquals(get, i);
+            index++;
+            System.out.println(get);
         }
 
-
-
-    }
-
-
-
-
-
-    @Test
-    void getSample() {
-
-
-    }
-
-    @Test
-    void setSample() {
-    }
-
-    @Test
-    void getData() {
     }
 }
+

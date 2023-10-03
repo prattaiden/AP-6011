@@ -5,8 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) throws IOException {
 
@@ -15,7 +13,7 @@ public class Main {
         ServerSocket server = new ServerSocket(8080);
         String filename = "";
 
-        //SOCKET-FOR-WAITING  for the client using .accept (wait forever same as while true)
+       //(wait forever same as while true)
         while (true) {
             Socket client = server.accept();
 
@@ -23,14 +21,15 @@ public class Main {
             Scanner scanner = new Scanner(client.getInputStream());
 
             //READ-&-GRAB-FILE-NAME
-            //HTTPequest class
+            //HTTPRequest class
             filename = HTTPRequest.getFileName(HTTPRequest.getRequest(scanner));
+
 
 
             //Opening the file
             //relative path, bc its using current director, don't need '/', if included, won't find file
-            File file = new File("/Users/aidenpratt/Documents/AP-6011/Day5/HTTPRefactor/Resources" + filename);
-            File failfile = new File("/Users/aidenpratt/Documents/AP-6011/Day5/HTTPRefactor/Resources/error.html");
+            File file = new File("Resources" + filename);
+            File failfile = new File("Resources/error.html");
 
 
             // Get the output stream from the client socket to send the HTTP response
@@ -40,7 +39,7 @@ public class Main {
             OutputStream outputStream = client.getOutputStream();
 
             //Create a httpResponse
-            HTTPResponse httpResponse = new HTTPResponse(filename, file, outputStream, failfile);
+            //HTTPResponse httpResponse = new HTTPResponse(filename, file, outputStream, failfile);
 
         }
 

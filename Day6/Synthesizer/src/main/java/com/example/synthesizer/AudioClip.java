@@ -9,32 +9,33 @@ public class AudioClip {
 
     static public int _sampleRate = 44100;
 
-    static public byte[] audioClipArray = new byte[(int) (_duration*_sampleRate * 2)];
+    public byte[] audioClipArray;
+    public static final int TOTAL_SAMPLES = ((int) (_duration * _sampleRate));
 
 
-    public static int getSample (int index){
-        //declaring variables
-        byte b1 = 0;
-        byte b2 = 0;
-        int sample;
+    public AudioClip(){
+        audioClipArray = new byte[(int) ((_duration*_sampleRate) * 2)];
 
-        //b1 and b2 are equal to these indexes in the audiocliparray
-        b1 = audioClipArray[(index*2)+1];
-        b2 = audioClipArray[(index*2)];
-
-        //left shifting b1, it is now a short
-        //(b1-0)
-        b1 <<= 8;
-
-        //or | b1 with b2 to combine them, creating a short
-        //(b1-b2)
-        sample = b1 | b2;
-
-        //saved in sample int and returned, sets it to 4 bytes (0-0-b1-b2)
-        return sample;
     }
- //0000-0000-0000-0000-0000-0000-0000-0000
-    public static void setSample (int index, int value){
+
+    public int getSample (int index){
+
+        byte b1 = audioClipArray[index*2];
+        byte b2 = audioClipArray[index*2 +1];
+
+        int result = 0;
+
+//        System.out.println("Get the first byte : " + Integer.toBinaryString(b2 << 8));
+//        System.out.println("Get the second byte: " + Integer.toBinaryString(b1));
+
+        result = b2<<8 | (b1 & 0xFF);
+        return result;
+
+    }
+
+
+        //0000-0000-0000-0000-0000-0000-0000-0000
+    public void setSample (int index, int value){
         audioClipArray[index * 2] = (byte) value;
         audioClipArray[index * 2 + 1] = (byte) (value >> 8);
 

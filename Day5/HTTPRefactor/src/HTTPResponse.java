@@ -8,7 +8,7 @@ public class HTTPResponse {
 
         public HTTPResponse(String filename, File file, OutputStream outputStream, File failFile) throws IOException {
         // File exists, send it
-        String extension = HTTPRequest.getExtension(filename);
+            String extension = HTTPRequest.getExtension(filename);
 
             //Send file
             try{
@@ -26,15 +26,15 @@ public class HTTPResponse {
         }
 
 
-    public static String getContentType(String extension) {
-        return switch (extension.toLowerCase()) {
-            case "html" -> "text/html";
-            case "css" -> "text/css";
-            case "jpeg", "jpg" -> // Include additional JPEG extension
-                    "image/jpeg";
-            default -> "application/octet-stream";
-        };
-    }
+//    public static String getContentType(String extension) {
+//        return switch (extension.toLowerCase()) {
+//            case "html" -> "text/html";
+//            case "css" -> "text/css";
+//            case "jpeg", "jpg" -> // Include additional JPEG extension
+//                    "image/jpeg";
+//            default -> "application/octet-stream";
+//        };
+//    }
 
 
     private static void sendFile(File file, OutputStream outputStream, String extension) throws IOException {
@@ -56,10 +56,6 @@ public class HTTPResponse {
                 case "jpeg" -> {
                     outputStream.write("HTTP/1.1 200 OK\n".getBytes());
                     outputStream.write("Content-type: image/jpeg\n".getBytes());
-                }
-                case "mp3" -> {
-                    outputStream.write("HTTP/1.1 200 OK\n".getBytes());
-                    outputStream.write("Content-type: audio/mpeg\n".getBytes());
                 }
             }
 

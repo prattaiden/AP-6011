@@ -17,12 +17,12 @@ public HTTPRequest(Scanner scanner) {
 //HANDLE REQUEST
 public static String getRequest(Scanner scanner) {
     String _input = "";
-
     //READ-IN-FILE-NAME
     // Check if there is any data available to read from the client socket.
     if (scanner.hasNext()) {
         // Read the next line of input from the client socket.
          _input = scanner.nextLine();
+
 
     }
     return _input;
@@ -34,6 +34,12 @@ public static String getRequest(Scanner scanner) {
     // which is the requested filename.
     public static String getFileName (String input){
         _filename = input.split(" ")[1];
+
+        if(_filename.equals("/")){
+            _filename = "/index.html";
+        }
+
+        System.out.println(_filename);
 
         return _filename;
     }

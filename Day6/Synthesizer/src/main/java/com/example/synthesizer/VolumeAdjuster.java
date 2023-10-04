@@ -17,15 +17,22 @@ public class VolumeAdjuster implements AudioComponent {
 
     }
 
+    //getting a clip from the input and modifying it and return the updated clip
     @Override
     public AudioClip getClip() {
 
+        //original input clip
         AudioClip original = input_.getClip();
 
-        AudioClip result =  new AudioClip();
+        //new result clip that will be returned after modification
+        AudioClip result =  new AudioClip();//modification
 
+        //loop through the total samples and modify the sound
         for(int i = 0; i < AudioClip.TOTAL_SAMPLES; i++){
+            //get the sample value from the original clip
             int adjustedSample = (int)(Vscale * original.getSample(i));
+
+            //if else to ensure adjustment stays within range
             int max = Short.MAX_VALUE;
             int min = Short.MIN_VALUE;
 

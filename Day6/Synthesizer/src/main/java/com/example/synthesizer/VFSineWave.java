@@ -10,7 +10,7 @@ public class VFSineWave implements AudioComponent{
         int maxValue = Short.MAX_VALUE;
 
         AudioClip audioClip = new AudioClip();
-        AudioClip inputClip = new AudioClip();
+        AudioClip inputClip = input_.getClip();
 
 
         //looping through each sample in an audioclip

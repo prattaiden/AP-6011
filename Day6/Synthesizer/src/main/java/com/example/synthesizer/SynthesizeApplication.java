@@ -2,96 +2,119 @@ package com.example.synthesizer;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import java.awt.*;
+
 import java.io.IOException;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
-import javafx.scene.Node;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
-import javax.swing.border.TitledBorder;
 
 public class SynthesizeApplication extends Application {
+
+    int frequencySliderNum = 0;
+
     @Override
     public void start(Stage stage) throws IOException {
 
-       //IMPORTANT FOR MAINLAYOUT
-        VBox MainLayout = new VBox();
-        MainLayout.setStyle("-fx-padding: 40; -fx-background-color: rgba(184,199,44,0.31)");
+
+        //IMPORTANT FOR MAINLAYOUT
+        //ANCHORMAIN
+        AnchorPane anchorMain = new AnchorPane();
+
+        //VBOX1
+        VBox vBox1 = new VBox();
+        //frequency label that will be used in vbox1
+        Label frequencyLabel = new Label("Frequency");
+        String cssLayout = "-fx-border-color: #000000;\n" +
+                "-fx-border-insets: 0;\n" +
+                "-fx-border-width: 3;\n" +
+                "-fx-border-style: line;\n" +
+                "-fx-background-color: #9ae59a";
+        vBox1.setStyle(cssLayout);
+
+        VBox vBox2 = new VBox();
+        vBox2.setStyle("-fx-background-color: #f8cad1");
 
 
-        //borderPane
-        BorderPane borderp = new BorderPane();
-        Text atext = new Text("Frequency:");
-        TextField frequencyfield = new TextField();
+
+        //adding things to anchormain and setting the style
+        anchorMain.getChildren().add(vBox1);
+        anchorMain.getChildren().add(vBox2);
+        anchorMain.setStyle("-fx-padding: 30; -fx-background-color: #ccc7c7");
+
+        //Text frequencyFieldBar = new Text("Enter Frequency:");
+        //TextField frequencyfield = new TextField();
 
         //PLAY BUTTON with border pain
-       // Button playButton = new Button("PLAY");
         Button playButton = new Button("PLAY");
-
-        //THIS SHOULD SET THE PLAYBUTTON TO CENTER BUT IT ISNT?
-        //borderp.setCenter(playButton);
+//        playButton.relocate(450, 100);
 
 
+        //SLIDER
+        //minimum, maximum, default
+        Slider freqSlider = new Slider(50, 400, 100);
+        freqSlider.relocate(450, 250);
 
-        Button VolumeUpButton = new Button("Volume up");
-        borderp.setRight(VolumeUpButton);
-        Button VolumeDownButton = new Button ("Volume down");
-        borderp.setLeft(VolumeDownButton);
+//        Button VolumeUpButton = new Button("Volume up");
+//        Button VolumeDownButton = new Button ("Volume down");
 
+        //after setting widget , add to the layout
+        //ADDING TO THE VBOX
+        vBox1.getChildren().add(freqSlider);
+        vBox1.getChildren().add(frequencyLabel);
+        //RELOCATING VBOX
+        vBox1.relocate(80, 100);
 
+        //ADDING PLAYBUTTON TO VBOX2
+        vBox2.getChildren().add(playButton);
+        //RELOCATING VBOX2
+        vBox2.relocate(10, 10);
 
+        Scene scene = new Scene(anchorMain, 350, 350);
+        stage.setTitle("Synthesizer");
+        stage.setScene(scene);
+        stage.show();
 
-       //Clip clipTest = AudioSystem.getClip();
-
-        //setting an action, calling a function "handlePress"
+        //setting an action, calling a function "handlePLayPress"
         playButton.setOnAction(e-> {
             try {
-                handlePress(frequencyfield);
+                handlePlayPress(frequencySliderNum);
             } catch (LineUnavailableException ex) {
                 throw new RuntimeException(ex);
             }
         });
-
-
-
-        //after setting widgest , add to the layout
-        MainLayout.getChildren().add(playButton);
-        MainLayout.getChildren().add(atext);
-        MainLayout.getChildren().add(frequencyfield);
-
-        //for text-----
-       // MainLayout.getChildren().add(atext);
-
-        MainLayout.getChildren().add(VolumeDownButton);
-        MainLayout.getChildren().add(VolumeUpButton);
-
-
-        Scene scene = new Scene(MainLayout, 400, 240);
-        stage.setTitle("Synthesizer");
-        stage.setScene(scene);
-        stage.show();
+        
+        freqSlider.setOnMouseDragged(e->handleFreqSlider(e, freqSlider, frequencyLabel));
     }
 
-    private void handlePress(TextField freq) throws LineUnavailableException {
+    private void handleFreqSlider(MouseEvent e, Slider freqSlider, Label frequencyLabel) {
+        //give value of the slider
+        //set the value of the label using the slider's value
+        int result = (int)freqSlider.getValue();
+        frequencyLabel.setText("frequency: " + result);
+       frequencySliderNum = result;
+
+    }
+
+    //updated to not need text box, using freqSlider function
+    private void handlePlayPress(int freq) throws LineUnavailableException {
         //add the values in number1 and number2
-        int x;
 
-        x = Integer.parseInt(freq.getText());
+         //Integer.parseInt(freq.getText());
 
 
-        AudioComponent gen = new SquareWave(x);
+        AudioComponent gen = new SquareWave(freq);
         AudioClip clip = gen.getClip();
 
         //SETTING CLIP C AND THE DEFAULT AUDIOFORMAT
@@ -113,6 +136,10 @@ public class SynthesizeApplication extends Application {
 
 
     }
+
+//    private void handlePress2(TextField freq) throws LineUnavailableException{
+//
+//    }
 
     public static void main(String[] args) {
 

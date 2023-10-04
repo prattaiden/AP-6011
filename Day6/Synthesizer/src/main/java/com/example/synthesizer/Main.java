@@ -24,24 +24,22 @@ public class Main {
 
 
 
-
-
-        //---------------MIXER WAVES TEST -------------------
+        //---------------MIXER WAVES TEST -----------------------
         Mixer mixewaves = new Mixer();
         mixewaves.connectInput(gen2);
         mixewaves.connectInput(gen3);
 
-        //---------------SQUARE WAVES TEST --------------------
+        //---------------SQUARE WAVES TEST ----------------------
         SquareWave squarewave = new SquareWave(300);
 
-        //---------------WHITE NOISE TEST---------------------
+        //---------------WHITE NOISE TEST------------------------
         WhiteNoise white = new WhiteNoise(0);
 
         //--------------------VOLUME ADJUSTER----------------------
         VolumeAdjuster lowerVolume = new VolumeAdjuster( .3);
         lowerVolume.connectInput(gen);
 
-        //-------------------LINEAR RAMP TEST and VFSINEWAVE ------------------
+        //----------------LINEAR RAMP TEST and VFSINEWAVE ------------
         //create VFSineWave
         VFSineWave vfSineWave = new VFSineWave();
         //create a linear ramp
@@ -57,8 +55,8 @@ public class Main {
         //AudioClip clip = mixewaves.getClip();
         //AudioClip clip = lowerVolume.getClip();
         //AudioClip clip = squarewave.getClip();
-        AudioClip clip = white.getClip();
-        //AudioClip clip = vfSineWave.getClip();
+        //AudioClip clip = white.getClip();
+        AudioClip clip = vfSineWave.getClip();
 
 
 

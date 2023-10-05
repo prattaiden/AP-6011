@@ -2,7 +2,7 @@ package com.example.synthesizer;
 
 public class SineWave implements AudioComponent {
 
-    //Initializing variables
+    //Initializing variles
     //used to store frequency in the sine waves
     public double frequency;
     double sampleRate = 44100;

@@ -12,7 +12,6 @@ public class VFSineWave implements AudioComponent{
         AudioClip audioClip = new AudioClip();
         AudioClip inputClip = input_.getClip();
 
-
         //looping through each sample in an audioclip
         for (int i = 0; i < audioClip.TOTAL_SAMPLES; i++) {
             //calculating waveform value of the sample

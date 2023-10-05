@@ -40,7 +40,6 @@ public class Mixer implements AudioComponent {
     public void connectInput(AudioComponent input) {
 
         VolumeAdjuster lowerVolume = new VolumeAdjuster(.5);
-
         lowerVolume.connectInput(input);
 
         input_.add(lowerVolume.getClip());

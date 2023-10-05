@@ -1,6 +1,8 @@
 package com.example.synthesizer;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -9,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -22,6 +25,10 @@ import javax.sound.sampled.LineUnavailableException;
 
 public class SynthesizeApplication extends Application {
 
+    //CALL SUPER CONSTRUCTOR
+    //AudioComponentWidgetBase();
+
+
     int frequencySliderNum = 0;
 
     @Override
@@ -32,10 +39,16 @@ public class SynthesizeApplication extends Application {
         //ANCHORMAIN
         AnchorPane anchorMain = new AnchorPane();
 
+        //HBOX
+        HBox menu = new HBox();
+        menu.setStyle("-fx-background-color: #b4b4ea");
+        menu.setSpacing(30);
+        menu.setPadding(new Insets(5, 5, 5, 5));
+
+
         //VBOX1
         VBox vBox1 = new VBox();
-        //frequency label that will be used in vbox1
-        Label frequencyLabel = new Label("Frequency");
+
         String cssLayout = "-fx-border-color: #000000;\n" +
                 "-fx-border-insets: 0;\n" +
                 "-fx-border-width: 3;\n" +
@@ -43,14 +56,13 @@ public class SynthesizeApplication extends Application {
                 "-fx-background-color: #9ae59a";
         vBox1.setStyle(cssLayout);
 
-        VBox vBox2 = new VBox();
-        vBox2.setStyle("-fx-background-color: #f8cad1");
-
+//        VBox playbuttonbox = new VBox();
+//        playbuttonbox.setStyle("-fx-background-color: #f8cad1");
 
 
         //adding things to anchormain and setting the style
         anchorMain.getChildren().add(vBox1);
-        anchorMain.getChildren().add(vBox2);
+        anchorMain.getChildren().add(menu);
         anchorMain.setStyle("-fx-padding: 30; -fx-background-color: #ccc7c7");
 
         //Text frequencyFieldBar = new Text("Enter Frequency:");
@@ -63,6 +75,8 @@ public class SynthesizeApplication extends Application {
 
         //SLIDER
         //minimum, maximum, default
+        //frequency label that will be used in vbox1 for the slider
+        Label frequencyLabel = new Label("Frequency: ");
         Slider freqSlider = new Slider(50, 400, 100);
         freqSlider.relocate(450, 250);
 
@@ -74,17 +88,19 @@ public class SynthesizeApplication extends Application {
         vBox1.getChildren().add(freqSlider);
         vBox1.getChildren().add(frequencyLabel);
         //RELOCATING VBOX
-        vBox1.relocate(80, 100);
+        vBox1.relocate(40, 100);
 
-        //ADDING PLAYBUTTON TO VBOX2
-        vBox2.getChildren().add(playButton);
-        //RELOCATING VBOX2
-        vBox2.relocate(10, 10);
+        //ADDING PLAYBUTTON TO HBOX MENU
+        menu.getChildren().add(playButton);
+        menu.relocate(150, 200);
+        menu.setAlignment(Pos.BOTTOM_CENTER);
 
         Scene scene = new Scene(anchorMain, 350, 350);
         stage.setTitle("Synthesizer");
         stage.setScene(scene);
         stage.show();
+
+
 
         //setting an action, calling a function "handlePLayPress"
         playButton.setOnAction(e-> {
@@ -94,15 +110,18 @@ public class SynthesizeApplication extends Application {
                 throw new RuntimeException(ex);
             }
         });
-        
+
+        //handle slider
         freqSlider.setOnMouseDragged(e->handleFreqSlider(e, freqSlider, frequencyLabel));
     }
 
+
+    //FUNCTIONS HANDLING SLIDER AND BUTTON
     private void handleFreqSlider(MouseEvent e, Slider freqSlider, Label frequencyLabel) {
         //give value of the slider
         //set the value of the label using the slider's value
         int result = (int)freqSlider.getValue();
-        frequencyLabel.setText("frequency: " + result);
+        frequencyLabel.setText("Frequency: " + result);
        frequencySliderNum = result;
 
     }

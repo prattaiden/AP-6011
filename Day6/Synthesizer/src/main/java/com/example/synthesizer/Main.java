@@ -43,7 +43,7 @@ public class Main {
         //create VFSineWave
         VFSineWave vfSineWave = new VFSineWave();
         //create a linear ramp
-        LinearRamp linearRamp = new LinearRamp(50, 1000);
+        LinearRamp linearRamp = new LinearRamp(50, 2000);
         //connect the Linear Ramp as an input to the VFSineWave
         vfSineWave.connectInput(linearRamp);
         //get the audio clip

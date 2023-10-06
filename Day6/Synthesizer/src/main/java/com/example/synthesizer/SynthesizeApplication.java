@@ -13,155 +13,209 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 
+
 public class SynthesizeApplication extends Application {
 
     //CALL SUPER CONSTRUCTOR
-    //AudioComponentWidgetBase();
 
 
-    int frequencySliderNum = 0;
+   public static ArrayList<AudioComponentWidgetBase> widgets_ = new ArrayList<>();
+
+    //AUDIO LISTENER
+
+    //FOR PLAY
+
+
+    //ANCHOR PANE
+    AnchorPane anchorMain = new AnchorPane();
 
     @Override
     public void start(Stage stage) throws IOException {
 
 
-        //IMPORTANT FOR MAINLAYOUT
-        //ANCHORMAIN
-        AnchorPane anchorMain = new AnchorPane();
+        //--------------IMPORTANT FOR MAINLAYOUT-------------------
+        //--------------------------BORDER---------------------------
+        BorderPane main = new BorderPane();
 
+        //-------------------------LEFT PANEL----------------------------
         //HBOX
-        HBox menu = new HBox();
-        menu.setStyle("-fx-background-color: #b4b4ea");
-        menu.setSpacing(30);
-        menu.setPadding(new Insets(5, 5, 5, 5));
-
-
-        //VBOX1
-        VBox vBox1 = new VBox();
-
-        String cssLayout = "-fx-border-color: #000000;\n" +
+        HBox leftpanel = new HBox();
+        String cssLayoutleft = "-fx-border-color: #000000;\n" +
                 "-fx-border-insets: 0;\n" +
                 "-fx-border-width: 3;\n" +
                 "-fx-border-style: line;\n" +
-                "-fx-background-color: #9ae59a";
-        vBox1.setStyle(cssLayout);
+                "-fx-background-color: #8d9edc";
+       leftpanel.setStyle(cssLayoutleft);
+        leftpanel.setSpacing(30);
+        leftpanel.setPadding(new Insets(5, 5, 5, 5));
 
-//        VBox playbuttonbox = new VBox();
-//        playbuttonbox.setStyle("-fx-background-color: #f8cad1");
+        //Square widget button
+        Button squarewaveBTN = new Button("SQAURE");
+        leftpanel.getChildren().add(squarewaveBTN);
+
+        //Volume widget button
+        Button sinewaveBTN = new Button("SINEWAVE");
+        leftpanel.getChildren().add(sinewaveBTN);
+
+        //SETTING IT TO THE LEFT
+        main.setLeft(leftpanel);
 
 
-        //adding things to anchormain and setting the style
-        anchorMain.getChildren().add(vBox1);
-        anchorMain.getChildren().add(menu);
-        anchorMain.setStyle("-fx-padding: 30; -fx-background-color: #ccc7c7");
-
-        //Text frequencyFieldBar = new Text("Enter Frequency:");
-        //TextField frequencyfield = new TextField();
-
+        //---------------------------BOTTOM PANEL---------------------------
+        HBox botPanel = new HBox();
+        String cssLayoutbot = "-fx-border-color: #000000;\n" +
+                "-fx-border-insets: 0;\n" +
+                "-fx-border-width: 3;\n" +
+                "-fx-border-style: line;\n" +
+                "-fx-background-color: #f1a2b9";
+        botPanel.setStyle(cssLayoutbot);
         //PLAY BUTTON with border pain
         Button playButton = new Button("PLAY");
-//        playButton.relocate(450, 100);
-
-
-        //SLIDER
-        //minimum, maximum, default
-        //frequency label that will be used in vbox1 for the slider
-        Label frequencyLabel = new Label("Frequency: ");
-        Slider freqSlider = new Slider(50, 400, 100);
-        freqSlider.relocate(450, 250);
-
-//        Button VolumeUpButton = new Button("Volume up");
-//        Button VolumeDownButton = new Button ("Volume down");
-
-        //after setting widget , add to the layout
-        //ADDING TO THE VBOX
-        vBox1.getChildren().add(freqSlider);
-        vBox1.getChildren().add(frequencyLabel);
-        //RELOCATING VBOX
-        vBox1.relocate(40, 100);
-
         //ADDING PLAYBUTTON TO HBOX MENU
-        menu.getChildren().add(playButton);
-        menu.relocate(150, 200);
-        menu.setAlignment(Pos.BOTTOM_CENTER);
+        botPanel.getChildren().add(playButton);
+        botPanel.setAlignment(Pos.CENTER);
+        main.setBottom(botPanel);
 
-        Scene scene = new Scene(anchorMain, 350, 350);
+       // ---------------------------CIRCLE----------------------------------
+        Circle speaker = new Circle(400, 200 , 15);
+        anchorMain.getChildren().add(speaker);
+        speaker.relocate(600, 20);
+        //COLoR?
+
+        main.setCenter(anchorMain);
+
+
+
+        //----------------------SCENE FOR BORDER PANE-----------------------------
+        Scene scene = new Scene(main, 1000, 600);
         stage.setTitle("Synthesizer");
         stage.setScene(scene);
         stage.show();
 
+        //--------------------buttons to open the widget---------------------------
+        squarewaveBTN.setOnAction(e -> {
+            createWidget(Components.SQAURE_WAVE);
+        });
+
+        sinewaveBTN.setOnAction(e -> {
+            createWidget(Components.SINE_WAVE);
+        });
 
 
         //setting an action, calling a function "handlePLayPress"
         playButton.setOnAction(e-> {
             try {
-                handlePlayPress(frequencySliderNum);
+                handlePlayPress();
             } catch (LineUnavailableException ex) {
                 throw new RuntimeException(ex);
             }
         });
 
-        //handle slider
-        freqSlider.setOnMouseDragged(e->handleFreqSlider(e, freqSlider, frequencyLabel));
     }
 
+    //------------------------METHODS----------------------------------
+    private void createWidget(Components components) {
+        AudioComponent audioComponent = null;
+        if(components.equals(Components.SINE_WAVE)){
+            audioComponent = new SineWave(450);
+            SineWaveWidget sinewidg = new SineWaveWidget(audioComponent, anchorMain);
+            anchorMain.getChildren().add(sinewidg);
+            sinewidg.relocate(100, 200);
+            widgets_.add(sinewidg);
+        }
 
-    //FUNCTIONS HANDLING SLIDER AND BUTTON
-    private void handleFreqSlider(MouseEvent e, Slider freqSlider, Label frequencyLabel) {
-        //give value of the slider
-        //set the value of the label using the slider's value
-        int result = (int)freqSlider.getValue();
-        frequencyLabel.setText("Frequency: " + result);
-       frequencySliderNum = result;
-
+        else if(components.equals(Components.SQAURE_WAVE)){
+            audioComponent = new SquareWave(450);
+            SquareWaveWidget squarewidg = new SquareWaveWidget(audioComponent, anchorMain);
+            anchorMain.getChildren().add(squarewidg);
+            squarewidg.relocate(100, 400);
+            widgets_.add(squarewidg);
+        }
+//        AudioComponentWidgetBase acw = new AudioComponentWidgetBase(audioComponent, anchorMain);
+//        anchorMain.getChildren().add(acw);
+        //adding this to my array list of widgets
+//        widgets_.add(acw);
     }
 
     //updated to not need text box, using freqSlider function
-    private void handlePlayPress(int freq) throws LineUnavailableException {
-        //add the values in number1 and number2
-
-         //Integer.parseInt(freq.getText());
+    private void handlePlayPress() throws LineUnavailableException {
 
 
-        AudioComponent gen = new SquareWave(freq);
-        AudioClip clip = gen.getClip();
+            //SETTING CLIP C AND THE DEFAULT AUDIOFORMAT
+            Clip c = AudioSystem.getClip();
+            AudioFormat format16 = new AudioFormat(44100, 16, 1, true, false);
 
-        //SETTING CLIP C AND THE DEFAULT AUDIOFORMAT
-        Clip c = AudioSystem.getClip();
-        AudioFormat format16 = new AudioFormat( 44100, 16, 1, true, false );
+            //ARRAY LIST OF BYTES FROM THE WIDGET
+            //this is where it is getting the widget
+        System.out.println("# wigets" + widgets_.size());
+            byte[] data = widgets_.get(0).ac_.getClip().getData();
 
-        c.open( format16, clip.getData(), 0, clip.getData().length ); // Reads data from our byte array to play it.
 
-        c.start(); // Plays it.
+            AudioListener listener = new AudioListener(c);
 
-       //GOT RID OF LOOP AND IT WORKED?????
+            c.open(format16, data, 0, data.length); // Reads data from our byte array to play it.
 
-// Makes sure the program doesn't quit before the sound plays.
-        while( c.getFramePosition() < AudioClip.TOTAL_SAMPLES || c.isActive() || c.isRunning() ){
-            // Do nothing while we wait for the note to play.
-        }
+            c.start(); // Plays it.
 
-        c.close();
+            c.addLineListener(listener);
 
 
     }
-
-//    private void handlePress2(TextField freq) throws LineUnavailableException{
-//
-//    }
 
     public static void main(String[] args) {
 
         launch();
     }
 }
+
+
+
+//RIGHT PANEL
+//VBOX1
+//        VBox rightpanel = new VBox();
+//
+//        String cssLayoutright = "-fx-border-color: #000000;\n" +
+//                "-fx-border-insets: 0;\n" +
+//                "-fx-border-width: 3;\n" +
+//                "-fx-border-style: line;\n" +
+//                "-fx-background-color: #9ae59a";
+//        rightpanel.setStyle(cssLayoutright);
+
+//SLIDER
+//minimum, maximum, default
+//frequency label that will be used in vbox1 for the slider
+//        Label frequencyLabel = new Label("Frequency: ");
+//        Slider freqSlider = new Slider(50, 400, 100);
+//        freqSlider.relocate(450, 250);
+//        Label widgetTitle = new Label("Square Wave");
+
+//MOVING IT TO MAINBORDER
+//main.setRight(rightpanel);
+
+//after setting widget , add to the layout
+//ADDING TO THE VBOX
+//        rightpanel.getChildren().add(widgetTitle);
+//        rightpanel.getChildren().add(freqSlider);
+//        rightpanel.getChildren().add(frequencyLabel);
+//
+//        //RELOCATING VBOX
+//        rightpanel.relocate(40, 100);
+
+//CENTER PANEL
+//ANCHORMAIN
+//AnchorPane anchorMain = new AnchorPane();

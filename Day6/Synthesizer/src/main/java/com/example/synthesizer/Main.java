@@ -37,7 +37,7 @@ public class Main {
 
         //--------------------VOLUME ADJUSTER----------------------
         VolumeAdjuster lowerVolume = new VolumeAdjuster( .3);
-        lowerVolume.connectInput(gen);
+        lowerVolume.connectInput(mixewaves);
 
         //----------------LINEAR RAMP TEST and VFSINEWAVE ------------
         //create VFSineWave
@@ -53,10 +53,10 @@ public class Main {
         //===========================PLAY AUDIO CLIP===============================/
         //AudioClip clip = gen.getClip();
         //AudioClip clip = mixewaves.getClip();
-        //AudioClip clip = lowerVolume.getClip();
+        AudioClip clip = lowerVolume.getClip();
         //AudioClip clip = squarewave.getClip();
         //AudioClip clip = white.getClip();
-        AudioClip clip = vfSineWave.getClip();
+        //AudioClip clip = vfSineWave.getClip();
 
 
 

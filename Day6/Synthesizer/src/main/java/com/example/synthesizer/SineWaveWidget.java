@@ -1,37 +1,33 @@
 package com.example.synthesizer;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 
-public class SquareWaveWidget extends AudioComponentWidgetBase {
-    public SquareWaveWidget(AudioComponent ac, AnchorPane parent) {
+public class SineWaveWidget extends AudioComponentWidgetBase{
+    public SineWaveWidget(AudioComponent ac, AnchorPane parent) {
         super(ac, parent);
 
         //WIDGETLABEL
-        Label titlelabel = new Label("SQAUREWAVE");
+        Label titlelabel = new Label("SINEWAVE");
         titlePanel_.getChildren().add(titlelabel);
 
         //SLIDER
-        Slider squareFreqSlider = new Slider(100, 800, 450);
+        Slider SinefreqSlider = new Slider(100, 800, 450);
         Label freqLabel = new Label("Frequency: ");
-        squareFreqSlider.setOnMouseDragged(e->handleFrequencySlider(e, squareFreqSlider, freqLabel));
+        SinefreqSlider.setOnMouseDragged(e->handleFrequencySlider(e, SinefreqSlider, freqLabel));
         sliderPanel_.getChildren().add(freqLabel);
-        sliderPanel_.getChildren().add(squareFreqSlider);
+        sliderPanel_.getChildren().add(SinefreqSlider);
 
 
 
     }
-
     private void handleFrequencySlider(MouseEvent e, Slider freqSlider, Label Flabel) {
         AudioComponent ac1 = getAudioComponent();
         int result = (int)freqSlider.getValue();
         Flabel.setText("Frequency: " + result);
-        ((SquareWave)ac1).updateSquareFrequency(result);
+        ((SineWave)ac1).updateSineFrequency(result);
 
     }
 }
-

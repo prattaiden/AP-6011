@@ -6,25 +6,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class SquareWaveWidget extends AudioComponentWidgetBase {
-    public SquareWaveWidget(AudioComponent ac, AnchorPane parent) {
+public class WhiteNoiseWidget extends AudioComponentWidgetBase {
+
+    public WhiteNoiseWidget(AudioComponent ac, AnchorPane parent) {
         super(ac, parent);
 
         //WIDGETLABEL
-        Label titlelabel = new Label("SQAURE WAVE");
+        Label titlelabel = new Label("WHITE NOISE");
         sliderPanel_.getChildren().add(titlelabel);
 
         //SLIDER
-        Slider squareFreqSlider = new Slider(100, 800, 450);
-        Label freqLabel = new Label("Frequency: 450");
-        squareFreqSlider.setOnMouseDragged(e->handleFrequencySlider(e, squareFreqSlider, freqLabel));
-        sliderPanel_.getChildren().add(freqLabel);
-        sliderPanel_.getChildren().add(squareFreqSlider);
+//        Slider whiteFreqSlide = new Slider(100, 800, 450);
+//        Label freqLabel = new Label("Frequency: 450");
+//        whiteFreqSlide.setOnMouseDragged(e->handleFrequencySlider(e, whiteFreqSlide, freqLabel));
+//        sliderPanel_.getChildren().add(freqLabel);
+//        sliderPanel_.getChildren().add(whiteFreqSlide);
 
         //-----------------VBOX FOR SPEAKER AND X------------------------
         VBox closeInput = new VBox();
@@ -60,8 +60,9 @@ public class SquareWaveWidget extends AudioComponentWidgetBase {
         AudioComponent ac1 = getAudioComponent();
         int result = (int)freqSlider.getValue();
         Flabel.setText("Frequency: " + result);
-        ((SquareWave)ac1).updateSquareFrequency(result);
+        ((WhiteNoise)ac1).updateWhiteFrequency(result);
 
     }
-}
 
+
+}

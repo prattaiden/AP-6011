@@ -7,11 +7,11 @@ public class WhiteNoise implements AudioComponent {
 
     //Initializing variables
     //used to store frequency in the sine waves
-    public double frequency;
+    public double frequency_;
     double sampleRate = 44100;
 
     public WhiteNoise(double freq){
-        this.frequency = freq;
+        this.frequency_ = freq;
 
     }
 
@@ -52,8 +52,11 @@ public class WhiteNoise implements AudioComponent {
     @Override
     public void connectInput(AudioComponent input) {
 
-
     }
 
+
+    public void updateWhiteFrequency(int freq){
+        frequency_ = freq;
+    }
 
 }

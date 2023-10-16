@@ -4,22 +4,17 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,39 +23,36 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 
+import static com.example.synthesizer.VolumeAdjuster.Vscale;
+
 
 public class SynthesizeApplication extends Application {
 
-    //CALL SUPER CONSTRUCTOR
-
 
    public static ArrayList<AudioComponentWidgetBase> widgets_ = new ArrayList<>();
-
-    //AUDIO LISTENER
-
-    //FOR PLAY
+    public static ArrayList<AudioComponentWidgetBase> connected_widgets_ = new ArrayList<>();
 
 
-    //ANCHOR PANE
     AnchorPane anchorMain = new AnchorPane();
+
+    public static VolumeAdjuster changeVolume;
+
+    public static VolumeAdjusterWidget VAWidget;
+
+    public static Circle speaker_;
 
     @Override
     public void start(Stage stage) throws IOException {
 
 
         //--------------IMPORTANT FOR MAINLAYOUT-------------------
-        //--------------------------BORDER---------------------------
+        //--------------------------BORDER--------------------------
         BorderPane main = new BorderPane();
 
-        //-------------------------LEFT PANEL----------------------------
-        //HBOX
-        HBox leftpanel = new HBox();
-        String cssLayoutleft = "-fx-border-color: #000000;\n" +
-                "-fx-border-insets: 0;\n" +
-                "-fx-border-width: 3;\n" +
-                "-fx-border-style: line;\n" +
-                "-fx-background-color: #8d9edc";
-       leftpanel.setStyle(cssLayoutleft);
+        //-------------------------LEFT PANEL---------------------
+
+        VBox leftpanel = new VBox();
+       leftpanel.setStyle("-fx-background-color: #a3a3ff");
         leftpanel.setSpacing(30);
         leftpanel.setPadding(new Insets(5, 5, 5, 5));
 
@@ -68,9 +60,13 @@ public class SynthesizeApplication extends Application {
         Button squarewaveBTN = new Button("SQAURE");
         leftpanel.getChildren().add(squarewaveBTN);
 
-        //Volume widget button
+        //Sine widget button
         Button sinewaveBTN = new Button("SINEWAVE");
         leftpanel.getChildren().add(sinewaveBTN);
+
+        //White noise widget button
+        Button whiteBTN = new Button("WHITENOISE");
+        leftpanel.getChildren().add(whiteBTN);
 
         //SETTING IT TO THE LEFT
         main.setLeft(leftpanel);
@@ -78,12 +74,7 @@ public class SynthesizeApplication extends Application {
 
         //---------------------------BOTTOM PANEL---------------------------
         HBox botPanel = new HBox();
-        String cssLayoutbot = "-fx-border-color: #000000;\n" +
-                "-fx-border-insets: 0;\n" +
-                "-fx-border-width: 3;\n" +
-                "-fx-border-style: line;\n" +
-                "-fx-background-color: #f1a2b9";
-        botPanel.setStyle(cssLayoutbot);
+        botPanel.setStyle("-fx-background-color: #A3A3FFFF");
         //PLAY BUTTON with border pain
         Button playButton = new Button("PLAY");
         //ADDING PLAYBUTTON TO HBOX MENU
@@ -92,17 +83,17 @@ public class SynthesizeApplication extends Application {
         main.setBottom(botPanel);
 
        // ---------------------------CIRCLE----------------------------------
-        Circle speaker = new Circle(400, 200 , 15);
-        anchorMain.getChildren().add(speaker);
-        speaker.relocate(600, 20);
+        speaker_ = new Circle(400, 200 , 15);
+        anchorMain.getChildren().add(speaker_);
+        speaker_.setFill(Color.rgb(0, 0, 0));
+        speaker_.relocate(760, 330);
         //COLoR?
-
         main.setCenter(anchorMain);
-
-
+        //making volue widget appear
+        createWidget(Components.VOLUME);
 
         //----------------------SCENE FOR BORDER PANE-----------------------------
-        Scene scene = new Scene(main, 1000, 600);
+        Scene scene = new Scene(main, 1000, 800);
         stage.setTitle("Synthesizer");
         stage.setScene(scene);
         stage.show();
@@ -116,6 +107,9 @@ public class SynthesizeApplication extends Application {
             createWidget(Components.SINE_WAVE);
         });
 
+        whiteBTN.setOnAction(e -> {
+            createWidget(Components.WHITE_NOISE);
+        });
 
         //setting an action, calling a function "handlePLayPress"
         playButton.setOnAction(e-> {
@@ -131,30 +125,34 @@ public class SynthesizeApplication extends Application {
     //------------------------METHODS----------------------------------
     private void createWidget(Components components) {
         AudioComponent audioComponent = null;
-        if(components.equals(Components.SINE_WAVE)){
+        if (components.equals(Components.SINE_WAVE)) {
             audioComponent = new SineWave(450);
             SineWaveWidget sinewidg = new SineWaveWidget(audioComponent, anchorMain);
             anchorMain.getChildren().add(sinewidg);
-            sinewidg.relocate(100, 200);
+            sinewidg.relocate(100, 250);
             widgets_.add(sinewidg);
-        }
-
-        else if(components.equals(Components.SQAURE_WAVE)){
+        } else if (components.equals(Components.SQAURE_WAVE)) {
             audioComponent = new SquareWave(450);
             SquareWaveWidget squarewidg = new SquareWaveWidget(audioComponent, anchorMain);
             anchorMain.getChildren().add(squarewidg);
-            squarewidg.relocate(100, 400);
+            squarewidg.relocate(100, 100);
             widgets_.add(squarewidg);
+        } else if (components.equals(Components.VOLUME)) {
+            VAWidget = new VolumeAdjusterWidget(changeVolume, anchorMain);
+            anchorMain.getChildren().add(VAWidget);
+            VAWidget.relocate(690,620);
+        } else if (components.equals(Components.WHITE_NOISE)) {
+            audioComponent = new WhiteNoise(450);
+            WhiteNoiseWidget whiteWidg = new WhiteNoiseWidget(audioComponent, anchorMain);
+            anchorMain.getChildren().add(whiteWidg);
+            whiteWidg.relocate(100, 400);
+            widgets_.add(whiteWidg);
         }
-//        AudioComponentWidgetBase acw = new AudioComponentWidgetBase(audioComponent, anchorMain);
-//        anchorMain.getChildren().add(acw);
-        //adding this to my array list of widgets
-//        widgets_.add(acw);
+
     }
 
     //updated to not need text box, using freqSlider function
     private void handlePlayPress() throws LineUnavailableException {
-
 
             //SETTING CLIP C AND THE DEFAULT AUDIOFORMAT
             Clip c = AudioSystem.getClip();
@@ -163,59 +161,39 @@ public class SynthesizeApplication extends Application {
             //ARRAY LIST OF BYTES FROM THE WIDGET
             //this is where it is getting the widget
         System.out.println("# wigets" + widgets_.size());
-            byte[] data = widgets_.get(0).ac_.getClip().getData();
 
+        Mixer mixer = new Mixer();
+        VolumeAdjuster volumeAdjuster = new VolumeAdjuster(10);
+
+        for (AudioComponentWidgetBase w : connected_widgets_){
+              if(!(w.ac_ instanceof  VolumeAdjuster)){
+                  AudioComponent ac = w.ac_;
+                  mixer.connectInput(ac);
+              }
+        }
+
+        double volumeScale = VAWidget.volSlider_.getValue();
+
+        VolumeAdjuster volumeAdjuster1 = new VolumeAdjuster(volumeScale);
+        volumeAdjuster1.connectInput(mixer);
+
+
+        volumeAdjuster.connectInput(mixer);
+
+        System.out.println(volumeAdjuster.toString());
+        AudioClip clip = volumeAdjuster.getClip();
 
             AudioListener listener = new AudioListener(c);
 
-            c.open(format16, data, 0, data.length); // Reads data from our byte array to play it.
+            c.open(format16, clip.getData(), 0, clip.getData().length); // Reads data from our byte array to play it.
 
             c.start(); // Plays it.
 
             c.addLineListener(listener);
-
-
     }
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         launch();
     }
 }
-
-
-
-//RIGHT PANEL
-//VBOX1
-//        VBox rightpanel = new VBox();
-//
-//        String cssLayoutright = "-fx-border-color: #000000;\n" +
-//                "-fx-border-insets: 0;\n" +
-//                "-fx-border-width: 3;\n" +
-//                "-fx-border-style: line;\n" +
-//                "-fx-background-color: #9ae59a";
-//        rightpanel.setStyle(cssLayoutright);
-
-//SLIDER
-//minimum, maximum, default
-//frequency label that will be used in vbox1 for the slider
-//        Label frequencyLabel = new Label("Frequency: ");
-//        Slider freqSlider = new Slider(50, 400, 100);
-//        freqSlider.relocate(450, 250);
-//        Label widgetTitle = new Label("Square Wave");
-
-//MOVING IT TO MAINBORDER
-//main.setRight(rightpanel);
-
-//after setting widget , add to the layout
-//ADDING TO THE VBOX
-//        rightpanel.getChildren().add(widgetTitle);
-//        rightpanel.getChildren().add(freqSlider);
-//        rightpanel.getChildren().add(frequencyLabel);
-//
-//        //RELOCATING VBOX
-//        rightpanel.relocate(40, 100);
-
-//CENTER PANEL
-//ANCHORMAIN
-//AnchorPane anchorMain = new AnchorPane();

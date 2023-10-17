@@ -46,7 +46,7 @@ public class AudioComponentWidgetBase extends Pane {
 
         //------------DRAG BOX-----------------------------------
         dragPanel_ = new HBox();
-        dragPanel_.setStyle("-fx-background-color: #f6c5f6; -fx-border-color: black");
+        dragPanel_.setStyle("-fx-background-color: #8cea7a; -fx-border-color: black");
         dragPanel_.setPadding(new Insets(5));
         Label drag = new Label("[]");
         dragPanel_.getChildren().add(drag);
@@ -60,7 +60,7 @@ public class AudioComponentWidgetBase extends Pane {
 
         //------------------------BOX FOR SLIDER-------------------------
         sliderPanel_ = new VBox();
-        sliderPanel_.setStyle("-fx-background-color: #825aee; -fx-border-color: black");
+        sliderPanel_.setStyle("-fx-background-color: #e86945; -fx-border-color: black");
         sliderPanel_.setPadding(new Insets(10));
         sliderPanel_.setSpacing(5);
 

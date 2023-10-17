@@ -162,9 +162,9 @@ public class SynthesizeApplication extends Application {
             //this is where it is getting the widget
         System.out.println("# wigets" + widgets_.size());
 
+        //MAKES THE SPEAKER THE MIXER
         Mixer mixer = new Mixer();
         VolumeAdjuster volumeAdjuster = new VolumeAdjuster(10);
-
         for (AudioComponentWidgetBase w : connected_widgets_){
               if(!(w.ac_ instanceof  VolumeAdjuster)){
                   AudioComponent ac = w.ac_;

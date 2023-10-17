@@ -1,0 +1,23 @@
+.light{
+  background: blue;
+}
+
+.light2{
+  background: #ff002c;
+}
+
+ body{
+   background-color: rgb(107, 87, 87);
+ }
+table{
+  color: white;
+  margin: auto;
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+td{
+  font-size: 20px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid white;
+}

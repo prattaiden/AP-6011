@@ -13,6 +13,7 @@ function buildTable(){
       box += '</tr>';
   }
 
+
   document.getElementById("multiTable").innerHTML = box;
 }
 
@@ -22,18 +23,35 @@ let td1 = document.getElementsByTagName("td");
 for(let td of td1){
   td.addEventListener("mouseover", function (){td.classList.add("light")})
   td.addEventListener("mouseout", function (){td.classList.remove("light")})
-  td.addEventListener("click", function() {td.classList.add("light2")})
 
-  //td.addEventListener("click", function() {td.classList.remove("light2")})
+  td.addEventListener("click", function() {td.classList.add("light2")})
+  // if(td.click()) {
+  //   td.addEventListener("click", function () {
+  //     td.classList.remove("light2")
+  //   })
 }
+
+
 
 let i = 0;
 function changeBackground(){
 
   let doc = document.getElementById("multiTable");
-  let color = ["rgb(200, 200, 0)", "rgb(100, 0, 100)", "rgb(0, 150, 0)", "rgb(70, 40, 20)", "rgb(145, 0, 255)", "rgb(0, 154, 0)"];
+  let color = ["rgb(200, 200, 0)", "rgb(100, 0, 100)", "rgb(0, 150, 0)"];
   doc.style.backgroundColor = color[i];
   i = (i + 1) % color.length;
 
 }
-window.setInterval(changeBackground, 100)
+
+
+//document.getElementById("colorBTN")
+
+window.setInterval(changeBackground, 200)
+
+
+
+
+
+
+
+

@@ -6,8 +6,8 @@
   background: #ff002c;
 }
 
- body{
-   background-color: rgb(107, 87, 87);
+body{
+  background-color: rgb(59, 56, 56);
  }
 table{
   color: white;
@@ -21,3 +21,5 @@ td{
   text-align: center;
   border: 1px solid white;
 }
+
+

@@ -23,8 +23,6 @@ for (let i = 0; i < 3; i++){
 
 let killed = false;
 
-
-
 function animateImage() {
 
   eraseOld();
@@ -69,8 +67,6 @@ function animateImage() {
         }
       }
     }
-
-
   }
 
   if (!killed) {

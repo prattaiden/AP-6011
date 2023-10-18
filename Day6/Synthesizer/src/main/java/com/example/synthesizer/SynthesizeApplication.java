@@ -28,7 +28,7 @@ import static com.example.synthesizer.VolumeAdjuster.Vscale;
 
 public class SynthesizeApplication extends Application {
 
-
+    //array lists of widgets and connected to the mixer speaker widgets
    public static ArrayList<AudioComponentWidgetBase> widgets_ = new ArrayList<>();
     public static ArrayList<AudioComponentWidgetBase> connected_widgets_ = new ArrayList<>();
 
@@ -68,6 +68,10 @@ public class SynthesizeApplication extends Application {
         Button whiteBTN = new Button("WHITENOISE");
         leftpanel.getChildren().add(whiteBTN);
 
+        //mixer buttonu
+        Button mixBTN = new Button("mix");
+        leftpanel.getChildren().add(mixBTN);
+
         //SETTING IT TO THE LEFT
         main.setLeft(leftpanel);
 
@@ -89,7 +93,9 @@ public class SynthesizeApplication extends Application {
         speaker_.relocate(760, 330);
         //COLoR?
         main.setCenter(anchorMain);
-        //making volue widget appear
+
+        //-----------------------------Constant VOLUME----------------------
+        //making volume widget appear
         createWidget(Components.VOLUME);
 
         //----------------------SCENE FOR BORDER PANE-----------------------------
@@ -110,6 +116,10 @@ public class SynthesizeApplication extends Application {
         whiteBTN.setOnAction(e -> {
             createWidget(Components.WHITE_NOISE);
         });
+
+        mixBTN.setOnAction(e -> {
+            createWidget(Components.MIXER);
+    });
 
         //setting an action, calling a function "handlePLayPress"
         playButton.setOnAction(e-> {
@@ -147,6 +157,12 @@ public class SynthesizeApplication extends Application {
             anchorMain.getChildren().add(whiteWidg);
             whiteWidg.relocate(100, 400);
             widgets_.add(whiteWidg);
+        } else if (components.equals(Components.MIXER)){
+            audioComponent = new Mixer();
+            MixerWidget mixWidg = new MixerWidget(audioComponent, anchorMain);
+            anchorMain.getChildren().add(mixWidg);
+            mixWidg.relocate(400, 200);
+            widgets_.add(mixWidg);
         }
 
     }
@@ -160,16 +176,16 @@ public class SynthesizeApplication extends Application {
 
             //ARRAY LIST OF BYTES FROM THE WIDGET
             //this is where it is getting the widget
-        System.out.println("# wigets" + widgets_.size());
+        System.out.println("# widgets" + widgets_.size());
 
         //MAKES THE SPEAKER THE MIXER
         Mixer mixer = new Mixer();
         VolumeAdjuster volumeAdjuster = new VolumeAdjuster(10);
         for (AudioComponentWidgetBase w : connected_widgets_){
-              if(!(w.ac_ instanceof  VolumeAdjuster)){
+             // if(!(w.ac_ instanceof  VolumeAdjuster)){
                   AudioComponent ac = w.ac_;
                   mixer.connectInput(ac);
-              }
+              //}
         }
 
         double volumeScale = VAWidget.volSlider_.getValue();

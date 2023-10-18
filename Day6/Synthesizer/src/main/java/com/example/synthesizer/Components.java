@@ -6,4 +6,6 @@ public enum Components {
     VOLUME,
     WHITE_NOISE,
 
+    MIXER
+
 }

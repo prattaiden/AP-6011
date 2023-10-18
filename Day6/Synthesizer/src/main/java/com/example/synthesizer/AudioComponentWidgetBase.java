@@ -17,6 +17,8 @@ import javafx.scene.shape.Line;
 //class to create object of this class
 public class AudioComponentWidgetBase extends Pane {
 
+
+    Circle mixerSpeaker_;
     AudioComponent ac_;
     AnchorPane parent_;
 
@@ -124,13 +126,16 @@ public class AudioComponentWidgetBase extends Pane {
         line_.setEndY(e.getSceneY());
 
         parent_.getChildren().add(line_);
+
     }
 
   void dragWidget(MouseEvent e) {
         double deltaX = e.getSceneX() - mouseXPos;
         double deltaY = e.getSceneY() - mouseYPos;
         this.relocate(deltaX + widgetXPos, deltaY + widgetYPos);
-
+        //trying to get the line to move with the widget
+        line_.setStartX(deltaX + widgetXPos);
+        line_.setStartY(deltaY + widgetYPos);
     }
 
    void getPosInfo(MouseEvent e) {

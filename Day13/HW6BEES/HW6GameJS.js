@@ -27,7 +27,7 @@ function animateImage() {
 
   eraseOld();
 
-  context.drawImage(RunGuy, RunGuy.xPos - 25, RunGuy.yPos - 25, 50, 50);
+  context.drawImage(RunGuy, RunGuy.xPos - 60, RunGuy.yPos - 25, 90, 50);
 
   for (let i = 0; i < bearArray.length; i++) {
     context.drawImage(bearArray[i].img, bearArray[i].xPos, bearArray[i].yPos, 150, 100);
@@ -51,18 +51,19 @@ function animateImage() {
     }
 
     //if guy is touched
-    if (Math.abs(bearArray[i].xPos - RunGuy.xPos) < 5
-      && Math.abs(bearArray[i].yPos - RunGuy.yPos) < 5) {
+    if (Math.abs((bearArray[i].xPos)- RunGuy.xPos) < 5
+      && Math.abs((bearArray[i].yPos)+ - RunGuy.yPos) < 5) {
       console.log("kill");
       killed = true;
+      clearInterval(timerVar);
     }
 
     for (let j = 0; j < bearArray.length; j++) {
       if (bearArray[i] !== bearArray[j]) {
         if (Math.abs((bearArray[i].xPos + 100) - (bearArray[j].xPos + 100)) < 30
           && Math.abs((bearArray[i].yPos + 100) - (bearArray[j].yPos + 100)) < 30) {
-          bearArray[j].xPos += Math.random() * 400;
-          bearArray[j].yPos += Math.random() * 200;
+          bearArray[j].xPos = Math.random() * 400;
+          bearArray[j].yPos = Math.random() * 200;
           console.log("collision")
         }
       }
@@ -81,7 +82,7 @@ function animateImage() {
 function gameOver(){
   context.font = "50px Ariel";
   context.fillStyle = "red";
-  context.fillText("game over", 450 , 300);
+  context.fillText("YOU DIED", 400 , 300);
 }
 
 function mainDrawing(){
@@ -91,40 +92,58 @@ function mainDrawing(){
 function handleMouse(e){
   RunGuy.xPos = e.x;
   RunGuy.yPos = e.y;
+
+  //rotate
+  // for (let i = 0; i < bearArray.length; i++) {
+  //   let BX = bearArray[i].offsetLeft + bearArray[i].offsetWidth/2;
+  //   let BY = bearArray[i].offsetTop + bearArray[i].offsetHeight/2;
+  //   let nX = BX - event.clientX;
+  //   let nY = BX - event.clientY;
+  //   let degree = (Math.atan(-nX/nY)*180)/Math.PI;
+  //   if(dY > 0){
+  //     degree += 180;
+  //   }
+  //   bearArray[i].style.transform = "rotate(" + degree + "deg)";
+  // }
+
 }
 
 function eraseOld(){
   //add layer on top of previous image
-  context.fillStyle="rgb(185,232,169)";
+  context.fillStyle=("rgb(100, 100 100)");
   context.fillRect(0,0, canvasW, canvasH);
 }
+
+//TIMER:
+let timerVar = setInterval(countTimer, 1000);
+let totalSeconds = 0;
+function countTimer() {
+  ++totalSeconds;
+  let hour = Math.floor(totalSeconds /3600);
+  let minute = Math.floor((totalSeconds - hour*3600)/60);
+  let seconds = totalSeconds - (hour*3600 + minute*60);
+  if(hour < 10)
+    hour = "0"+hour;
+  if(minute < 10)
+    minute = "0"+minute;
+  if(seconds < 10)
+    seconds = "0"+seconds;
+  document.getElementById("timer").innerHTML = hour + ":" + minute + ":" + seconds;
+}
+
 
 window.onload=mainDrawing;
 
 document.onmousemove = handleMouse;
 
 
-// // this function will flip the imagedata
-// function flipImage() {
-//   // create a canvas that will present the output image
-//   const outputImage = document.createElement('canvas');
+//change background
+// window.setInterval(changeBackground, 200);
+// function changeBackground(){
 //
-//   // set it to the same size as the image
-//   outputImage.width = BearGuy.naturalWidth;
-//   outputImage.height = BearGuy.naturalHeight;
+//   let doc = document.getElementById("canvasDrawing");
+//   let color = ["rgb(200, 200, 0)", "rgb(100, 0, 100)", "rgb(0, 150, 0)"];
+//   doc.style.backgroundColor = color[i];
+//   i = (i + 1) % color.length;
 //
-//   // get the drawing context, needed to draw the new image
-//   const ctx = outputImage.getContext('2d');
-//
-//   ctx.scale(-1, 1);
-//
-//   // draw our image at position [-width, 0] on the canvas, we need
-//   // a negative offset because of the negative scale transform
-//   ctx.drawImage(BearGuy, -outputImage.width, 0);
-//
-//   // insert the output image after the input image
-//   BearGuy.parentNode.insertBefore(
-//     outputImage,
-//     BearGuy.nextElementSibling
-//   );
 // }

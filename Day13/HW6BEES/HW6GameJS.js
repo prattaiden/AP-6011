@@ -29,6 +29,7 @@ function animateImage() {
 
   context.drawImage(RunGuy, RunGuy.xPos - 60, RunGuy.yPos - 25, 90, 50);
 
+  //bear following mouse
   for (let i = 0; i < bearArray.length; i++) {
     context.drawImage(bearArray[i].img, bearArray[i].xPos, bearArray[i].yPos, 150, 100);
 
@@ -50,7 +51,7 @@ function animateImage() {
       bearArray[i].xPos += 100;
     }
 
-    //if guy is touched
+    //if guy is touched - end timer
     if (Math.abs((bearArray[i].xPos)- RunGuy.xPos) < 5
       && Math.abs((bearArray[i].yPos)+ - RunGuy.yPos) < 5) {
       console.log("kill");
@@ -58,6 +59,7 @@ function animateImage() {
       clearInterval(Timer);
     }
 
+    //checking for bear v bear collision
     for (let j = 0; j < bearArray.length; j++) {
       if (bearArray[i] !== bearArray[j]) {
         if (Math.abs((bearArray[i].xPos + 100) - (bearArray[j].xPos + 100)) < 30

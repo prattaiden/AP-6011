@@ -79,8 +79,8 @@ function compareFirstName(a, b){
   }
 
   else if(a.first == b.first){
-    if (a.last > b.last){
-      return true;
+    if (a.last < b.last){
+      return  ;
     }
     else if(a.last > b.last){
       return false;

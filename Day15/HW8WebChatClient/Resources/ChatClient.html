@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Client</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer type="text/javascript" src="ChatClient.js"></script>
+  <center><h id = "header"> Chat Client </h></center>
+</head>
+<body>
+<center>
+<label>Username:</label>
+<input type = "text"
+       id = "UserName"
+       placeholder = "Enter Username...">
+
+<label>Room ID:</label>
+<input type = "text"
+       id = "RoomName"
+       placeholder= "Enter Room Id...">
+  <button id = "submit"> submit </button>
+  <button id = "leave"> leave </button>
+</center>
+
+
+<div class = "whole">
+  <div
+    id = statusBox> <center><p><u>Users:</u></p></center>
+  </div>
+  <div
+    id = chatBox> <center><p><u>Chat:</u></p></center>
+  </div>
+</div>
+
+
+<label>Message:</label>
+<input
+  type = "text"
+  id = "Message"
+  placeholder="Enter a Message ...">
+<button id = "messageSend"> send </button>
+
+</body>
+
+
+</html>

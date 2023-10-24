@@ -1,28 +1,51 @@
 .whole{
-display: flex;
+  display: flex;
+  margin: auto;
+  width: 50%;
+  max-width: 900px;
+  justify-content: center;
+  background-color: #000000;
+  padding: 20px 20px;
+  border: 2px solid #461b46;
 }
 
 #statusBox{
-  height: 400px;
-  width: 200px;
-  border: 2px solid #333;
-  background: indianred;
-  /*box-shadow: 8px 8px 5px #444;*/
-  padding: 10px 20px;
-  /*background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);*/
+  height: 300px;
+  width: 100px;
+  border: 2px solid #461b46;
+  padding: 20px 20px;
+  overflow: scroll;
+  background: #c5c2c2;
+  -webkit-text-fill-color: blue;
+  font-weight: bold;
 }
 
 #chatBox{
-  height: 400px;
-  width: 700px;
-  border: 2px solid #333;
-  background: pink;
-  /*box-shadow: 8px 8px 5px #444;*/
-  padding: 10px 20px;
-  /*background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);*/
+  height: 300px;
+  width: 400px;
+  border: 2px solid #461b46;
+  background: #c5c2c2;
+  padding: 20px 20px;
+  overflow: scroll;
 }
 
 #header{
-  font-size: 50px;
-  -webkit-text-fill-color: #696363;
+  font-size: 25px;
+  font-family: Georgia;
+  -webkit-text-fill-color: #000000;
 }
+
+#boxes{
+  font-size: 20px;
+  -webkit-text-fill-color: black;
+}
+
+#submit{
+  background-color: greenyellow;
+}
+
+#leave{
+  background-color: #e33c55;
+}
+
+

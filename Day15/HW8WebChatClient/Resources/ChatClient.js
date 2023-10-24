@@ -1,12 +1,13 @@
 "use strict"
 
+//getting elements from the html so they can be edited
 const roomName = document.getElementById("RoomName");
 const message = document.getElementById("Message");
 //message.readOnly = true;
 const userName = document.getElementById("UserName");
 
 const chatDiv = document.getElementById("chatBox");
-const statusDiv = document.getElementById("statusBox");
+const UsersDiv = document.getElementById("statusBox");
 
 const MSGButton = document.getElementById("messageSend");
 const LeaveButton = document.getElementById("leave");
@@ -17,48 +18,69 @@ let ws =  new WebSocket("ws://localhost:8080");
 
 
 
+
 ws.onopen = function (){
   wsOpen = true;
 }
 
 //---------------------------------------ON MESSAGE------------------------------------
 ws.onmessage = function (e) {
+  //JSON from server to parse through the string
   let data = JSON.parse(e.data);
+
+  //pargraph element for the message field of the app
   let msg = document.createElement("p");
 
+  //if statement to check the type of data and ensure that a user and room is enterted in their fields
   if (data.type === "join" && data.user != "" && data.room != ""){
+    //users element for the users field of the app
     let users = document.createElement("p");
 
-    msg.textContent = data.user + " has joined the room : " + data.room;
+    //sets the text content of msg element to the user and entering the room
+    msg.textContent = data.user + " joined: " + data.room;
+
+    //setting the text content of users to the name of the user
     users.textContent = data.user;
+    //saving the user id as the data.user
     users.id = data.user;
-    statusDiv.appendChild(users);
-  }
-  else if (data.type === "message"){
-    msg.textContent = data.user + ": " + data.message;
+    //adding the users to the users div
+    //sending back to client
+    UsersDiv.appendChild(users);
   }
 
-  else if (data.type === "leave"){
+  //if data from JSON is a message
+  //makes so it empty messages cannot be sent
+  if (data.type === "message" && data.message != "") {
+    //text content is the output onto the chat screen
+    msg.textContent =  data.user + ": " + data.message;
+  }
+
+  //if data from the JSON is leave
+  if (data.type === "leave"){
     console.log("received leave msg")
     let userThatLeft = document.getElementById(data.user);
     //msg.textContent = "";
-    msg.textContent = data.user + " left the room";
-    statusDiv.removeChild(userThatLeft);
-    statusDiv.innerHTML = "";
+    msg.textContent = data.user + " left: " + data.room;
+    UsersDiv.removeChild(userThatLeft);
+    UsersDiv.innerHTML = "";
 
   }
+  //sending the message type back to the client by appending the child
   chatDiv.appendChild(msg);
 }
 
-//---------------------------------METHODS-------------------------------
+//-------------------------------------METHODS-------------------------------------------
 function handleKeyPressForJoinRoom(e){
-  //let data = JSON.parse(e.data);
+  if(!wsOpen){
+    console.log("web socket is not open yet..");
+  }
 
-  if (e.keyCode === 13){  // reminder: 13 is enter
+  if (e.keyCode === 13){ //13 is the enter key
 
-    let string = "join " + userName.value + " " + roomName.value;
+    //string for the JSON to send to the web socket
+    let joinJSON = "join " + userName.value + " " + roomName.value;
 
-    ws.send(string);
+    ws.send(joinJSON);
 
     userName.readOnly = true;
     roomName.readOnly = true;
@@ -68,16 +90,19 @@ function handleKeyPressForJoinRoom(e){
 }
 
 function handleClickJoinRoom(e){
-  //let data = JSON.parse(e.data);
+  if(!wsOpen){
+    console.log("web socket is not open yet...");
+  }
 
+  //if the action of pressing the button event is not null
   if (e != null){
-    let string = "join " + userName.value + " " + roomName.value;
+    //string for JSON then sending to the web socket
+    let joinJSON = "join " + userName.value + " " + roomName.value;
 
-    ws.send(string);
+    ws.send(joinJSON);
 
     userName.readOnly = true;
     roomName.readOnly = true;
-
 
   }
 }
@@ -85,13 +110,15 @@ function handleClickJoinRoom(e){
 function handleSendMessageEnter(e){
   if(!wsOpen){
     console.log("web socket is not open yet..");
-    return;
   }
 
   if (e.keyCode === 13) {
-    let stringM = "message " + message.value;
+    //string for JSON then sending to web socket
+    let stringMessage = "message " + message.value;
 
-    ws.send(stringM);
+    ws.send(stringMessage);
+
+    //erases what the user entered into the message field
     message.value = "";
   }
 }
@@ -99,13 +126,12 @@ function handleSendMessageEnter(e){
 function handleSendMessageClick(e){
   if(!wsOpen){
     console.log("web socket is not open yet..");
-    return;
   }
 
   if (e != null) {
-    let stringM = "message " + message.value;
+    let stringMessage = "message " + message.value;
 
-    ws.send(stringM);
+    ws.send(stringMessage);
     message.value = "";
   }
 }
@@ -113,18 +139,27 @@ function handleSendMessageClick(e){
 function handleEscape(e){
   if(!wsOpen){
     console.log("web socket is not open yet..");
-    return;
   }
-    let stringE = "leave " + "";
-    ws.send(stringE);
+    let stringEscape = "leave " + "";
+    ws.send(stringEscape);
 
+  //can enter text into username field
+  //username field set to empty
   userName.readOnly = false;
   userName.value = "";
+
+  //can enter text into room field
+  //room field set to empty
   roomName.readOnly = false;
   roomName.value = "";
-  message.value = "";
+
+  //cannot enter text into message field
+  //set message field set to empty
   message.readOnly = true;
-  statusDiv.innerHTML = "";
+  message.value = "";
+
+
+  UsersDiv.innerHTML = "";
   chatDiv.innerHTML = "";
 }
 

@@ -16,6 +16,7 @@ public class Main {
        //(wait forever same as while true)
         while (true) {
             Socket client = server.accept();
+            System.out.println("Entered the server");
 
             //Reading input from the client, wrap in scanner stream
             Scanner scanner = new Scanner(client.getInputStream());
@@ -31,15 +32,15 @@ public class Main {
             File file = new File("Resources" + filename);
             File failfile = new File("Resources/error.html");
 
-
             // Get the output stream from the client socket to send the HTTP response
             //we obtain the output stream (outputStream) from the client socket (client). This stream allows
             // us to send data back to the client. and also create a PrintWriter (printWriter) to write text-based
             // data to the output stream.
             OutputStream outputStream = client.getOutputStream();
 
+
             //Create a httpResponse
-            //HTTPResponse httpResponse = new HTTPResponse(filename, file, outputStream, failfile);
+            HTTPResponse httpResponse = new HTTPResponse(filename, file, outputStream, failfile);
 
         }
 

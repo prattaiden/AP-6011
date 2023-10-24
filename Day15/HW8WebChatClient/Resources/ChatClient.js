@@ -158,7 +158,7 @@ function handleEscape(e){
   message.readOnly = true;
   message.value = "";
 
-
+//removing any text from the chat and user fields
   UsersDiv.innerHTML = "";
   chatDiv.innerHTML = "";
 }

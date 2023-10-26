@@ -72,7 +72,7 @@ public class HTTPResponse {
             for( int i = 0; i < file.length(); i++ ) {
                 outputStream.write( fileStream.read() );
                 outputStream.flush();
-                Thread.sleep( 10 ); // Maybe add <- if images are still loading too quickly...
+                Thread.sleep( 2 ); // Maybe add <- if images are still loading too quickly...
             }
 
 

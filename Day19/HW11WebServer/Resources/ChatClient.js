@@ -81,9 +81,10 @@ function handleKeyPressForJoinRoom(e){
   if (e.keyCode === 13){ //13 is the enter key
 
     //string for the JSON to send to the web socket
-    let joinJSON = "join " + userName.value + " " + roomName.value;
+    let joinJSON = {"type":"join", "user":userName.value, "room":roomName.value}
+        //"join " + userName.value + " " + roomName.value;
 
-    ws.send(joinJSON);
+    ws.send(JSON.stringify(joinJSON));
 
     userName.readOnly = true;
     roomName.readOnly = true;
@@ -102,7 +103,7 @@ function handleClickJoinRoom(e){
     //string for JSON then sending to the web socket
     let joinJSON = "join " + userName.value + " " + roomName.value;
 
-    ws.send(joinJSON);
+    ws.send(JSON.stringify(joinJSON));
 
 
     userName.readOnly = true;
@@ -118,9 +119,9 @@ function handleSendMessageEnter(e){
 
   if (e.keyCode === 13) {
     //string for JSON then sending to web socket
-    let stringMessage = "message " + message.value;
+    let stringMessage= {"type":"message", "user":userName.value, "room":roomName.value, "message":message.value}
 
-    ws.send(stringMessage);
+    ws.send(JSON.stringify(stringMessage));
 
     //erases what the user entered into the message field
     message.value = "";
@@ -144,8 +145,8 @@ function handleEscape(e){
   if(!wsOpen){
     console.log("web socket is not open yet..");
   }
-    let stringEscape = "leave " + "";
-    ws.send(stringEscape);
+    let stringEscape = {"type":"leave", "user":userName.value, "room":roomName.value}
+    ws.send(JSON.stringify(stringEscape));
 
   //can enter text into username field
   //username field set to empty

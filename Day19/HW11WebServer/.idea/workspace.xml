@@ -5,22 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d48f38c6-d011-4fbe-af5d-18359f7e8e2b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HW11WebServer.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/ChatClient.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/ChatClient.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/error.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/webstyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HTTPRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HTTPResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/WebSocketHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/myRunnable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Day17/HW9ThreadedServer/src/HTTPResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Day17/HW9ThreadedServer/src/HTTPResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Day17/HW9ThreadedServer/src/myRunnable.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Day17/HW9ThreadedServer/src/myRunnable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Day18/HW10WSEcho/src/HTTPRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Day18/HW10WSEcho/src/HTTPRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/ChatClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/ChatClient.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +60,9 @@
       <updated>1698339529431</updated>
       <workItem from="1698339530554" duration="2178000" />
       <workItem from="1698341723109" duration="7504000" />
-      <workItem from="1698349569171" duration="10835000" />
+      <workItem from="1698349569171" duration="11346000" />
+      <workItem from="1698361518807" duration="712000" />
+      <workItem from="1698362274567" duration="257000" />
     </task>
     <servers />
   </component>

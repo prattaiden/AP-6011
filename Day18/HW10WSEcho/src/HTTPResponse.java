@@ -15,9 +15,16 @@ public class HTTPResponse {
             header_=httpRequest.header_;
             String extension = httpRequest.getExtension(filename);
 
+            //websocket handshake
+            try{
+                getWebSocketHandshake(outputStream, httpRequest);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+
             //Send file
             try{
-            sendFile(file, outputStream, extension, httpRequest);
+            sendFile(file, outputStream, extension);
             } catch(FileNotFoundException e){
 
             // File does not exist, send 404 error
@@ -30,29 +37,32 @@ public class HTTPResponse {
             outputStream.close();
         }
 
+     private void getWebSocketHandshake(OutputStream outputStream, HTTPRequest httpRequest) throws NoSuchAlgorithmException, IOException {
 
-    private void sendFile(File file, OutputStream outputStream, String extension, HTTPRequest httpRequest) throws IOException {
+         String encodeKey = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-1")
+                 .digest((header_.get("Sec-WebSocket-Key") + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").getBytes("UTF-8")));
+         if(httpRequest.typeIsWebSocket) {
+             System.out.println("handshake made websocket");
+
+             outputStream.write("HTTP/1.1 101 Switching Protocols\r\n".getBytes());
+             outputStream.write("Upgrade: websocket\r\n".getBytes());
+             outputStream.write("Connection: Upgrade\r\n".getBytes());
+             outputStream.write(("Sec-WebSocket-Accept: " + encodeKey + "\r\n").getBytes());
+
+             System.out.println("websocket handshake response:");
 
 
+             //outputStream.write("\r\n".getBytes());
+             outputStream.write("\r\n".getBytes());
+             outputStream.flush();
+         }
+     }
+
+    private void sendFile(File file, OutputStream outputStream, String extension) throws IOException {
         //READ REQUESTED FILE
         //Creating a file stream to read the contents of the file
         try (FileInputStream fileStream = new FileInputStream(file)) {
 
-            String encodeKey = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-1")
-                    .digest((header_.get("Sec-WebSocket-Key") + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").getBytes("UTF-8")));
-            if(httpRequest.typeIsWebSocket) {
-                System.out.println("handshake made websocket");
-
-                outputStream.write("HTTP/1.1 101 Switching Protocols\n".getBytes());
-                outputStream.write("Upgrade: websocket\n".getBytes());
-                outputStream.write("Connection: Upgrade\n".getBytes());
-                outputStream.write(("Sec-WebSocket-Accept: " + encodeKey + "\n").getBytes());
-
-
-                outputStream.write("\r\n".getBytes());
-
-            }
-            else{
             // Set the Content-type header based on the file extension
                 switch (extension) {
                     case "html" -> {
@@ -72,7 +82,7 @@ public class HTTPResponse {
                         outputStream.write("Content-type: text/js\n".getBytes());
                     }
                 }
-            }
+
 
             // Add an empty line to separate headers from the content
             // crucial delimiter that separates the HTTP headers from the content.
@@ -85,10 +95,9 @@ public class HTTPResponse {
             // avoids reading the file line by line and is more efficient for sending binary data like images
 
             fileStream.transferTo(outputStream);
+            outputStream.close();
 
-            } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+            }
     }
 
     private void sendFailFile(File file, OutputStream outputStream, String extension) throws IOException {

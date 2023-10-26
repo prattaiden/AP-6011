@@ -41,18 +41,18 @@ public void getRequest(Scanner scanner) {
 
     System.out.println(" input " + _input);
 
-    //String filetest = new String("GET /chat HTTP/1.1");
-
 
         while (!_input.equals("")) {
             // Read the next line of input from the client socket.
             _input = scanner.nextLine();
             System.out.println("in the while loop , input: " + _input);
-            String key = _input.split(": ")[0];
-            String val = _input.split(": ")[1];
-            header_.put(key, val);
-            System.out.println(header_);
-            //add the rest to the hashmap
+
+            if(!_input.equals("")) {
+                String key = _input.split(": ")[0];
+                String val = _input.split(": ")[1];
+                header_.put(key, val);
+                //add the rest to the hashmap
+            }
         }
         //what is going into the header
         if (header_.get("Connection").equals("Upgrade")) {

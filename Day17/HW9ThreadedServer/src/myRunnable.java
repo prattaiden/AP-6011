@@ -20,6 +20,11 @@ public class myRunnable implements Runnable{
 
         System.out.println("Entered the server");
 
+        try {
+            Thread.sleep( 10 );
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         //Reading input from the client, wrap in scanner stream
         Scanner scanner = null;
         try {

@@ -45,12 +45,13 @@ public void getRequest(Scanner scanner) {
         while (!_input.equals("")) {
             // Read the next line of input from the client socket.
             _input = scanner.nextLine();
-            System.out.println("in the while loop , input: " + _input);
+           // System.out.println("in the while loop , input: " + _input);
 
             if(!_input.equals("")) {
                 String key = _input.split(": ")[0];
                 String val = _input.split(": ")[1];
                 header_.put(key, val);
+                System.out.println(_input);
                 //add the rest to the hashmap
             }
         }

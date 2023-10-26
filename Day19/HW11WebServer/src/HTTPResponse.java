@@ -1,14 +1,23 @@
 import java.io.*;
+import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.HashMap;
-import java.util.Map;
 
 public class HTTPResponse {
+    //public HashMap<String, String> header_ = new HashMap<>();
 
-        private OutputStream outputStream;
+    private OutputStream outputStream;
 
-        public HTTPResponse(String filename, File file, OutputStream outputStream, File failFile) throws IOException {
+    private byte[] data ;
+    DataInputStream incomingMessage;
+
+        public HTTPResponse(String filename, File file, OutputStream outputStream, File failFile, HTTPRequest httpRequest) throws IOException {
         // File exists, send it
-            String extension = HTTPRequest.getExtension(filename);
+            //header_=httpRequest.header_;
+            String extension = httpRequest.getExtension(filename);
+
 
             //Send file
             try{
@@ -26,38 +35,31 @@ public class HTTPResponse {
         }
 
 
-//    public static String getContentType(String extension) {
-//        return switch (extension.toLowerCase()) {
-//            case "html" -> "text/html";
-//            case "css" -> "text/css";
-//            case "jpeg", "jpg" -> // Include additional JPEG extension
-//                    "image/jpeg";
-//            default -> "application/octet-stream";
-//        };
-//    }
-
-
-    private static void sendFile(File file, OutputStream outputStream, String extension) throws IOException {
-
+    private void sendFile(File file, OutputStream outputStream, String extension) throws IOException {
         //READ REQUESTED FILE
         //Creating a file stream to read the contents of the file
         try (FileInputStream fileStream = new FileInputStream(file)) {
 
             // Set the Content-type header based on the file extension
-            switch (extension) {
-                case "html" -> {
-                    outputStream.write("HTTP/1.1 200 OK\n".getBytes());
-                    outputStream.write("Content-type: text/html\n".getBytes());
+                switch (extension) {
+                    case "html" -> {
+                        outputStream.write("HTTP/1.1 200 OK\n".getBytes());
+                        outputStream.write("Content-type: text/html\n".getBytes());
+                    }
+                    case "css" -> {
+                        outputStream.write("HTTP/1.1 200 OK\n".getBytes());
+                        outputStream.write("Content-type: text/css\n".getBytes());
+                    }
+                    case "jpeg" -> {
+                        outputStream.write("HTTP/1.1 200 OK\n".getBytes());
+                        outputStream.write("Content-type: image/jpeg\n".getBytes());
+                    }
+                    case "js" -> {
+                        outputStream.write("HTTP/1.1 200 OK\n".getBytes());
+                        outputStream.write("Content-type: text/js\n".getBytes());
+                    }
                 }
-                case "css" -> {
-                    outputStream.write("HTTP/1.1 200 OK\n".getBytes());
-                    outputStream.write("Content-type: text/css\n".getBytes());
-                }
-                case "jpeg" -> {
-                    outputStream.write("HTTP/1.1 200 OK\n".getBytes());
-                    outputStream.write("Content-type: image/jpeg\n".getBytes());
-                }
-            }
+
 
             // Add an empty line to separate headers from the content
             // crucial delimiter that separates the HTTP headers from the content.
@@ -68,21 +70,14 @@ public class HTTPResponse {
             // use the transferTo method to efficiently transfer the content of the requested file (fileStream) directly
             // to the client's output stream (outputStream).
             // avoids reading the file line by line and is more efficient for sending binary data like images
-//                    fileStream.transferTo(outputStream);
-            for (int i = 0; i < file.length(); i++) {
-                outputStream.write(fileStream.read());
-                outputStream.flush();
-                // Maybe add <- if images are still loading too quickly...
-            }
 
-//
-        }
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+            fileStream.transferTo(outputStream);
+            outputStream.close();
+
+            }
     }
 
-    private static void sendFailFile(File file, OutputStream outputStream, String extension) throws IOException {
+    private void sendFailFile(File file, OutputStream outputStream, String extension) throws IOException {
 
         //read fail file html
         FileInputStream failFileStream = new FileInputStream(file);

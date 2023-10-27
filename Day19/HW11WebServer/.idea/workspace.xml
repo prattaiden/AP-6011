@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d48f38c6-d011-4fbe-af5d-18359f7e8e2b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Room.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/ChatClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/ChatClient.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HTTPRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HTTPRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/WebSocketHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WebSocketHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/myRunnable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/myRunnable.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +66,7 @@
       <workItem from="1698349569171" duration="11346000" />
       <workItem from="1698361518807" duration="712000" />
       <workItem from="1698362274567" duration="257000" />
+      <workItem from="1698420310214" duration="2059000" />
     </task>
     <servers />
   </component>

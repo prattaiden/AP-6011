@@ -16,7 +16,7 @@ public class Main {
        //(wait forever same as while true)
         while (true) {
             Socket client = server.accept();
-            System.out.println("got oconnection to client :" + client);
+            System.out.println("got connection to client :" + client);
             Thread thread = new Thread(new myRunnable(client));
             thread.start();
         }

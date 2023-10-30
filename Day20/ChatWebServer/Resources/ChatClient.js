@@ -38,36 +38,42 @@ ws.onmessage = function (e) {
   //if statement to check the type of data and ensure that a user and room is enterted in their fields
   if (data.type === "join" && data.user !== "" && data.room !== "") {
     // Create a <p> element for the user
-    // let users = document.createElement("p");
+    let users = document.createElement("p");
+    users.textContent = data.user;
 
-    // Set the text content of the msg element to the user and entering the room
+    // Add the 'users' element to the 'UsersDiv'
+    UsersDiv.appendChild(users);
+    msg.textContent = data.user + " joined: " +data.room;
 
+    // Save the user's name to 'userNamesList'
     userNamesList.push(data.user);
-
-    // Add usernames to UsersDiv
-    for (let i = 0; i < userNamesList.length; i++) {
-      msg.textContent = data.user + " joined: " + data.room;
-      let user = userNamesList[i];
-      let userElement = document.createElement('p');
-      userElement.textContent = user;
-      UsersDiv.appendChild(userElement);
-    }
-
-    console.log("name list " + userNamesList.toString());
-
+    console.log(userNamesList);
   }
+
+
+      // Set the text content of the msg element to the user and entering the room
+    //--------------------------------------------------------------------------
+    //   userNamesList.push(data.user);
+    //
+    //   // Add usernames to UsersDiv
+    //   for (let i = 0; i < userNamesList.length; i++) {
+    //     msg.textContent = data.user + " joined: " + data.room;
+    //     let user = userNamesList[i];
+    //     let userElement = document.createElement('p');
+    //     userElement.textContent = user;
+    //     UsersDiv.appendChild(userElement);
+    //   }
+    //
+    //   console.log("name list " + userNamesList.toString());
+    //
+    // }
+    //---------------------------------------------------------------------------
+
     // Set the text content of the 'users' element to the name of the user
-    // users.textContent = data.user;
-    //
-    // // Add the 'users' element to the 'UsersDiv'
-    // UsersDiv.appendChild(users);
-    //
-    // // Save the user's name to 'userNamesList'
-    // userNamesList.push(data.user);
 
     // Output 'userNamesList' for debugging
 
-
+//-------------------------------------------------------------------------------
   // if (data.type === "join" && data.user != "" && data.room != "") {
   //   //users element for the users field of the app
   //   let users = document.createElement("p");
@@ -89,6 +95,8 @@ ws.onmessage = function (e) {
   //   }
 
 
+      //-----------------------------------messages------------------------------------------------
+
   //if data from JSON is a message
   //makes so it empty messages cannot be sent
  else if (data.type === "message" && data.message != null && data.user != null) {
@@ -96,16 +104,21 @@ ws.onmessage = function (e) {
     msg.textContent =  data.user + ": " + data.message;
   }
 
+ //-------------------------------------leaving-----------------------------------------------------
+
   //if data from the JSON is leave
   else if (data.type === "leave"){
     console.log("received leave msg")
     let userThatLeft = document.getElementById(data.user);
-    //msg.textContent = "";
-    if(userThatLeft) {
-      UsersDiv.removeChild(userThatLeft);
-    }
 
     msg.textContent = data.user + " left: " + data.room;
+
+    if(userThatLeft) {
+      UsersDiv.removeChild(userThatLeft);
+
+    }
+
+
   }
 
   //sending the message type back to the client by appending the child
@@ -207,8 +220,8 @@ function handleEscape(e){
   message.value = "";
 
 //removing any text from the chat and user fields
-//   UsersDiv.innerHTML = "";
-//   chatDiv.innerHTML = "";
+  UsersDiv.innerHTML = "";
+  chatDiv.innerHTML = "you left the room";
 }
 
 

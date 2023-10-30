@@ -16,6 +16,8 @@ public class Room {
 
    private ArrayList<String> messageHistory = new ArrayList<>();
 
+   private ArrayList<String> userHistory = new ArrayList<>();
+
    private boolean historySent = false;
 
 
@@ -41,6 +43,8 @@ public class Room {
     public ArrayList<String> getMessageHistory(){
         return messageHistory;
     }
+
+    public ArrayList<String> getUsersHistory(){return userHistory;}
 
     public ArrayList<Socket> getClientSockets(){
         return clientSockets;
@@ -88,6 +92,11 @@ public class Room {
     //MESSAGES
     public synchronized void addMessage(String message){
         messageHistory.add(message);
+    }
+
+    //USERS
+    public synchronized void addUser(String Users){
+        userHistory.add(Users);
     }
 
     public synchronized void sendMessage(String msg) throws IOException {

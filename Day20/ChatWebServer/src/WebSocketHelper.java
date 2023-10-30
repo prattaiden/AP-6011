@@ -7,9 +7,12 @@ import java.util.HashMap;
 
 public class WebSocketHelper {
 
+    //public static Room room_;
     static Boolean masked_ = false;
 
-   static int finalLength_ = 0;
+    static int finalLength_ = 0;
+
+    // Room room_;
 
     //constructor
     public WebSocketHelper() {
@@ -45,12 +48,12 @@ public class WebSocketHelper {
 
     }
 
-    public static String decodeWSMessage(InputStream inputStream) throws IOException {
+    public static String decodeIncomingWSMessage(InputStream inputStream) throws IOException {
 
         DataInputStream DIS = new DataInputStream(inputStream);
 
         byte[] byteArrayShort1 = DIS.readNBytes(2);
-        System.out.println("WS 1st 2 bytes: " + byteArrayShort1);
+        //System.out.println("WS 1st 2 bytes: " + byteArrayShort1);
 
         Byte zeroByte = byteArrayShort1[0];
         // System.out.println(zeroByte);
@@ -67,50 +70,47 @@ public class WebSocketHelper {
         //somehow determine
 
         byte payloadLengthChecker = (byte) (firstByte & 0x7F);
-        System.out.println("payload length: " + payloadLengthChecker);
+       // System.out.println("payload length: " + payloadLengthChecker);
         //if length is 125 or less, length is just found in B1 here
-        if(payloadLengthChecker <= 125){
+        if (payloadLengthChecker <= 125) {
             finalLength_ = payloadLengthChecker;
-        }
-        else if (payloadLengthChecker == 126){
-           // finalLength_ = payloadLengthChecker;
+        } else if (payloadLengthChecker == 126) {
+            // finalLength_ = payloadLengthChecker;
             byte byteTwoAndThree = (byte) DIS.readShort();
             finalLength_ = byteTwoAndThree;
-          //  unsigned Short shortBytes = input.readShort();
-        }
-        else if (payloadLengthChecker == 127){
+            //  unsigned Short shortBytes = input.readShort();
+        } else if (payloadLengthChecker == 127) {
             //finalLength_ = payloadLengthChecker;
             byte byteTwoToNine = (byte) DIS.readLong();
             finalLength_ = byteTwoToNine;
         }
-
 
         //System.out.println("is it masked: " + masked_ + " length" + finalLength_);
 
         //if masked is true, read the next four bytes
 
         byte[] decodedArray = new byte[finalLength_];
-        if(masked_){
+        if (masked_) {
             //masked array bytes is 4 bytes
             byte[] maskedArray = DIS.readNBytes(4);
             byte[] encodedArray = DIS.readNBytes(finalLength_);
-            for(int i = 0; i < finalLength_; i++ ){
+            for (int i = 0; i < finalLength_; i++) {
                 //maskedArray[i] = DIS.readNByte();
-                decodedArray[i] = (byte) (encodedArray[i] ^ maskedArray[i%4]);
+                decodedArray[i] = (byte) (encodedArray[i] ^ maskedArray[i % 4]);
             }
             //System.out.println("masked array: " + maskedArray);
-        }
-        else{
-            decodedArray =DIS.readNBytes(finalLength_);
+        } else {
+            decodedArray = DIS.readNBytes(finalLength_);
         }
 
-        System.out.println("decoded array: " + new String(decodedArray));
+       // System.out.println("decoded array: " + new String(decodedArray));
+
+
 
         return new String(decodedArray);
-
     }
 
-    public static void writeWSMessage(String message, OutputStream outputStream) throws IOException {
+    public static String writeWSMessage(String message, OutputStream outputStream) throws IOException {
 
         DataOutputStream DOS = new DataOutputStream(outputStream);
 
@@ -121,25 +121,120 @@ public class WebSocketHelper {
 
         int decodedMessage = message.length();
 
-        if (decodedMessage <= 125){
+        if (decodedMessage <= 125) {
             DOS.writeByte(message.length());
-        }
-
-        else if (decodedMessage == 126) {
+        } else if (decodedMessage == 126) {
             DOS.write(126);
             DOS.writeShort(message.length());
-        }
-
-        else if (decodedMessage == 127){
+        } else if (decodedMessage == 127) {
             DOS.write(127);
             DOS.writeLong(message.length());
         }
 
+        //System.out.println(message);
+
+        //save message into a string
+        //get the string after "room":
+
+
         DOS.writeBytes(message);
+
         DOS.flush();
+
+        return message;
     }
 
+
+    //-------------------------UGLY METHODS TO GO THROUGH JSON------------------------------------
+    public static String findRoom(String message) {
+
+
+        // Step 1: Remove the curly braces from the JSON string
+        String jsonContent = message.substring(1, message.length() - 1);
+        String[] pairsSplit = jsonContent.split(",");
+
+        String roomName = "";
+
+        for (String pair : pairsSplit) {
+            String[] keyValue = pair.split(":");
+            String key = keyValue[0].replaceAll("\"", "").trim();
+            String value = keyValue[1].replaceAll("\"", "").trim();
+
+            if (key.equals("room")) {
+                roomName = value;
+            }
+
+        }
+
+        return roomName;
+    }
+    public static String findMessage(String message){
+
+        // Step 1: Remove the curly braces from the JSON string
+        String jsonContent = message.substring(1, message.length() - 1);
+        String[] pairsSplit = jsonContent.split(",");
+
+        String mMessage = "";
+
+        for (String pair : pairsSplit) {
+            String[] keyValue = pair.split(":");
+            String key = keyValue[0].replaceAll("\"", "").trim();
+            String value = keyValue[1].replaceAll("\"", "").trim();
+
+            if (key.equals("message")) {
+                mMessage = value;
+            }
+
+        }
+
+        return mMessage;
+    }
+
+    public static String findType(String message){
+
+        // Step 1: Remove the curly braces from the JSON string
+        String jsonContent = message.substring(1, message.length() - 1);
+        String[] pairsSplit = jsonContent.split(",");
+
+        String type = "";
+
+        for (String pair : pairsSplit) {
+            String[] keyValue = pair.split(":");
+            String key = keyValue[0].replaceAll("\"", "").trim();
+            String value = keyValue[1].replaceAll("\"", "").trim();
+
+            if (key.equals("type")) {
+                type = value;
+            }
+
+        }
+
+        return type;
+    }
+    public static String findUser(String message){
+
+        // Step 1: Remove the curly braces from the JSON string
+        String jsonContent = message.substring(1, message.length() - 1);
+        String[] pairsSplit = jsonContent.split(",");
+
+        String userName = "";
+
+        for (String pair : pairsSplit) {
+            String[] keyValue = pair.split(":");
+            String key = keyValue[0].replaceAll("\"", "").trim();
+            String value = keyValue[1].replaceAll("\"", "").trim();
+
+            if (key.equals("user")) {
+                 userName = value;
+            }
+
+        }
+
+        return userName;
+    }
 }
+
+
 
 
 //then go into other method in web socket helper that will do the bit manipulation::::::

@@ -9,6 +9,8 @@ public class myRunnable implements Runnable{
 
     String filename = "";
 
+    Room room_;
+
     myRunnable(Socket client){
         client_ = client;
     }
@@ -16,9 +18,7 @@ public class myRunnable implements Runnable{
     @Override
     public void run() {
         try {
-            System.out.println("Entered the client handler thread");
-
-
+           // System.out.println("Entered the client handler thread");
             //READ-&-GRAB-FILE-NAME
             //HTTPRequest class
             HTTPRequest http = new HTTPRequest();
@@ -27,7 +27,7 @@ public class myRunnable implements Runnable{
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println(client_);
+           // System.out.println(client_);
 
             //if it is a websocket is true
             if( http.typeIsWebSocket ) {
@@ -38,14 +38,88 @@ public class myRunnable implements Runnable{
                 } catch (NoSuchAlgorithmException ex) {
                     throw new RuntimeException(ex);
                 }
+
                 //while true loop for while the type is a web socket
                 //will read and then parse through the bits being sent
-
                 while (true) {
                     try {
-                       String message = WebSocketHelper.decodeWSMessage(client_.getInputStream());
+                        //decoding the message so that it comes in as a JSON
+                       String message = WebSocketHelper.decodeIncomingWSMessage(client_.getInputStream());
+                       // System.out.println("decoded JSON msg: " + message);
 
-                        WebSocketHelper.writeWSMessage(message,client_.getOutputStream());
+
+                        //writing the message through binary
+                        String nextMSG = WebSocketHelper.writeWSMessage(message,client_.getOutputStream());
+                       // System.out.println("next message sending back?: " + nextMSG);
+
+
+                        String userNameFound = WebSocketHelper.findUser(nextMSG);
+
+                        //finding the type
+                        String typeFound = WebSocketHelper.findType(nextMSG);
+//                        System.out.println("type is: " + typeFound);
+
+                        //PARSING JSON IF STATEMENTS-------------------------------------------------------
+
+                        if (typeFound.equals("join")) {
+                            ;
+                            //  System.out.println("joining");
+                            String joinString = nextMSG;
+                            //finding the room from the JSON
+                            String roomNameFound = WebSocketHelper.findRoom(joinString);
+                            //System.out.println("parsed from find room name: " + roomNameFound);
+                            //creating or joining the room
+                            room_ = Room.getRoom(roomNameFound);
+                            // room_.sendMessage(nextMSG);
+
+//                            CHECKING IF USER ALREADY EXISTS SO NO DOUBLE MESSAGES
+                            if (!room_.containsUser(userNameFound)) {
+                                room_.addClient(client_);
+                                room_.addUserName(userNameFound);
+                                System.out.println("added user: " + userNameFound + " to room: " + roomNameFound);
+                                //room_.sendMessage(nextMSG);
+                            }
+
+                            //room_.addMessage(joinString);
+                            room_.sendMessage(joinString);
+
+                        }
+
+//                            if(!room_.isHistorySent()) {
+//                                for (String history : room_.getMessageHistory()) {
+//                                    room_.sendMessage(history);
+//                                }
+//                                room_.markHistorySent();
+//                            }
+//                            room_.unMarkHistorySent();
+//
+//                            room_.addClient(client_);
+//
+//                        }
+
+                        if(typeFound.equals("leave")){
+                            //System.out.println("leaving");
+                            room_.removeClient(client_);
+                            room_.removeUserName(userNameFound);
+                            System.out.println("array list of user names in this room: " + room_.getUserNAmes());
+                            room_.sendMessage(nextMSG);
+                        }
+
+                        if(typeFound.equals("message")){
+                            String messageString = nextMSG;
+                            //fining the message from the JSON
+                            String messageFound = WebSocketHelper.findMessage(messageString);
+                            System.out.println("the message is: " + messageFound);
+                            room_.addMessage(messageFound);
+                            room_.sendMessage(messageString);
+
+//                            for(String history : room_.getMessageHistory()) {
+//                                room_.sendMessage(history);
+//                            }
+
+                        }
+
+
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -53,7 +127,7 @@ public class myRunnable implements Runnable{
 
             }
 
-            //else get file name
+            //---------------------------else get file name, not WS--------------------------------------
             else {
 
                 filename = http.getFileName();
@@ -71,11 +145,11 @@ public class myRunnable implements Runnable{
 
                 OutputStream outputStream = client_.getOutputStream();
 
-                System.out.println("output stream of client created " + outputStream);
+                //System.out.println("output stream of client created " + outputStream);
 
                 //Create a httpResponse
                 HTTPResponse httpResponse = new HTTPResponse(filename, file, outputStream, failfile, http);
-                System.out.println("httpreponse created ? but notin " + httpResponse);
+                //System.out.println("httpreponse created ? but notin " + httpResponse);
 
             }
         }

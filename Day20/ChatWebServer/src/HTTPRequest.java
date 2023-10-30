@@ -31,7 +31,7 @@ public class HTTPRequest {
         //get first line and get filename from it... GET /index.html http1.2
         input = scanner.nextLine();
 
-        System.out.println("1st line of header: " + input);
+        //System.out.println("1st line of header: " + input);
 
         //then store
         _filename = input.split(" ")[1];
@@ -40,11 +40,11 @@ public class HTTPRequest {
             _filename = "/index.html";
         }
 
-        System.out.println("file name requested: " + _filename);
+        //System.out.println("file name requested: " + _filename);
 
 
         input = scanner.nextLine();
-        System.out.println(" input " + input);
+        //System.out.println(" input " + input);
 
         while (!input.equals("")) {
 
@@ -60,7 +60,7 @@ public class HTTPRequest {
         //what is going into the header
         if (headers_.get("Connection").equals("Upgrade")) {
             typeIsWebSocket = true;
-            System.out.println("true!!!!");
+           // System.out.println(");
         }
 
     }

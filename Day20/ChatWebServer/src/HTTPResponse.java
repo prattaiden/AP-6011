@@ -6,7 +6,6 @@ import java.util.Base64;
 import java.util.HashMap;
 
 public class HTTPResponse {
-    //public HashMap<String, String> header_ = new HashMap<>();
 
     private OutputStream outputStream;
 

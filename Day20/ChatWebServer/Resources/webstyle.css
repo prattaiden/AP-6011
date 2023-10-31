@@ -1,32 +1,40 @@
+body{
+  background-color: #4088ad;
+}
+
 .whole{
   display: flex;
   margin: auto;
   width: 50%;
   max-width: 900px;
   justify-content: center;
-  background-color: #000000;
+
   padding: 20px 20px;
-  border: 2px solid #461b46;
+
 }
 
 #statusBox{
   height: 300px;
-  width: 100px;
-  border: 2px solid #461b46;
-  padding: 20px 20px;
-  overflow: scroll;
-  background: #c5c2c2;
-  -webkit-text-fill-color: blue;
+  width: 200px;
+  color: #d700ff;
   font-weight: bold;
+  border: 5px outset #000000;
+  background-color: #cccbcb;
+  padding: 10px 10px;
+  overflow: auto;
+  box-sizing: border-box;
+
+
 }
 
 #chatBox{
   height: 300px;
-  width: 400px;
-  border: 2px solid #461b46;
-  background: #c5c2c2;
-  padding: 20px 20px;
-  overflow: scroll;
+  width: 200px;
+  border: 5px outset #000000;
+  background-color: #cccbcb;
+  padding: 10px 10px;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 #header{
@@ -46,6 +54,13 @@
 
 #leave{
   background-color: #e33c55;
+}
+
+.timestamp {
+  font-weight: bold;
+  font-size: 10px;
+  color: #000000; /* Change the color to your preference */
+  margin-right: 5px; /* Adjust the spacing as needed */
 }
 
 

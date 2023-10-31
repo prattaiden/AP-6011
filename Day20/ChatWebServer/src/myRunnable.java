@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class myRunnable implements Runnable{
 
-    public Socket client_;
+    private Socket client_;
 
     String filename = "";
 
@@ -18,7 +18,6 @@ public class myRunnable implements Runnable{
     @Override
     public void run() {
         try {
-           // System.out.println("Entered the client handler thread");
             //READ-&-GRAB-FILE-NAME
             //HTTPRequest class
             HTTPRequest http = new HTTPRequest();
@@ -27,7 +26,6 @@ public class myRunnable implements Runnable{
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
-           // System.out.println(client_);
 
             //if it is a websocket is true
             if( http.typeIsWebSocket ) {
@@ -40,25 +38,21 @@ public class myRunnable implements Runnable{
                     throw new RuntimeException(ex);
                 }
 
+                //boolean for when to stop connection, occurs when leave statement happens
+                boolean stop = false;
                 //while true loop for while the type is a web socket
                 //will read and then parse through the bits being sent
-                while (true) {
+                while (!stop) {
                     try {
                         //decoding the message so that it comes in as a JSON
                        String message = WebSocketHelper.decodeIncomingWSMessage(client_.getInputStream());
-                       // System.out.println("decoded JSON msg: " + message);
 
+                       //finding the username target value
+                        String userNameFound = WebSocketHelper.findTargetValue(message, "user");
 
-                        //writing the message through binary
-                       // String nextMSG = WebSocketHelper.writeWSMessage(message,client_.getOutputStream());
-                       // System.out.println("next message sending back?: " + nextMSG);
+                        //finding the type target value
+                        String typeFound = WebSocketHelper.findTargetValue(message, "type");
 
-
-                        String userNameFound = WebSocketHelper.findUser(message);
-
-                        //finding the type
-                        String typeFound = WebSocketHelper.findType(message);
-//                        System.out.println("type is: " + typeFound);
 
                         //PARSING JSON IF STATEMENTS-------------------------------------------------------
 
@@ -67,83 +61,45 @@ public class myRunnable implements Runnable{
                             //  System.out.println("joining");
                             String joinString = message;
                             //finding the room from the JSON
-                            String roomNameFound = WebSocketHelper.findRoom(joinString);
+                            String roomNameFound = WebSocketHelper.findTargetValue(joinString, "room");
                             //creating or joining the room
                             room_ = Room.getRoom(roomNameFound);
-                            // room_.sendMessage(nextMSG);
-                            //room_.addMessage(joinString);
+
+                            room_.sendMessage(joinString);
 
 //                            CHECKING IF USER ALREADY EXISTS SO NO DOUBLE MESSAGES
                             if (!room_.containsUser(userNameFound)) {
                                 //adds clients to scoket list so they see eachother
-                                room_.addClient(client_);
-                                //add username to username string list
-                                room_.addUserName(userNameFound);
-                                System.out.println("added user: " + userNameFound + " to room: " + roomNameFound);
+                                room_.addMessage(joinString);
+                                room_.addClient(client_, userNameFound);
 
-                                room_.addUser(joinString);
+                               // System.out.println("added user: " + userNameFound + " to room: " + roomNameFound);
 
-                                //HISTORY TEST
-                                //send history in this if statement to only this clinet
-                                if(!room_.isHistorySent()) {
-                                for (String history : room_.getUsersHistory()) {
-                                    room_.sendMessage(history);
+                                //looping through the message history and sending it to an new user joining the room
+                                for(String history : room_.getMessageHistory()){
+                                    room_.sendMessageToClient(history, client_);
                                 }
-                                room_.markHistorySent();
                             }
-                            room_.unMarkHistorySent();
-
-
-                            }
-//                            if(!room_.isHistorySent()) {
-//                                for (String history : room_.getMessageHistory()) {
-//                                    room_.sendMessage(history);
-//                                }
-//                                room_.markHistorySent();
-//                            }
-//                            room_.unMarkHistorySent();
-//
-//                            room_.addClient(client_);
-
-                            //room_.addMessage(joinString);
-                            room_.sendMessage(joinString);
-
                         }
-
 
                         if(typeFound.equals("leave")){
                             //System.out.println("leaving");
-                            room_.removeClient(client_);
-                            room_.removeUserName(userNameFound);
-                            System.out.println("array list of user names in this room: " + room_.getUserNAmes());
+                            room_.removeClient(client_, userNameFound);
+
+                           // System.out.println("array list of user names in this room: " + room_.getUserNAmes());
                             room_.sendMessage(message);
+                            stop = true;
                         }
 
                         if(typeFound.equals("message")){
                             String messageString = message;
                             //fining the message from the JSON
-                            String messageFound = WebSocketHelper.findMessage(messageString);
-                            System.out.println("the message is: " + messageFound);
+                            String messageFound = WebSocketHelper.findTargetValue(messageString, "message");
+                            //System.out.println("the message is: " + messageFound);
 
-                            //adding the message to the message histroy string array
+                            //adding the message to the message history string array
                             room_.addMessage(messageString);
-                            //room_.sendMessage(messageString);
-
-                            //checking for history
-                            if(!room_.isHistorySent()) {
-                                for (String history : room_.getMessageHistory()) {
-                                    room_.sendMessage(history);
-                                }
-                                room_.markHistorySent();
-                            }
-                            room_.unMarkHistorySent();
-
-                            //room_.sendMessage(messageString);
-
-//                            for(String history : room_.getMessageHistory()) {
-//                                room_.sendMessage(history);
-//                            }
-
+                            room_.sendMessage(messageString);
                         }
 
 
@@ -151,7 +107,6 @@ public class myRunnable implements Runnable{
                         throw new RuntimeException(ex);
                     }
                 }
-
             }
             //---------------------------else get file name, not WS--------------------------------------
 
@@ -172,11 +127,9 @@ public class myRunnable implements Runnable{
 
                 OutputStream outputStream = client_.getOutputStream();
 
-                //System.out.println("output stream of client created " + outputStream);
-
                 //Create a httpResponse
-                HTTPResponse httpResponse = new HTTPResponse(filename, file, outputStream, failfile, http);
-                //System.out.println("httpreponse created ? but notin " + httpResponse);
+                new HTTPResponse(filename, file, outputStream, failfile, http);
+
 
             }
         }

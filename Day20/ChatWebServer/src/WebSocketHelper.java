@@ -53,7 +53,6 @@ public class WebSocketHelper {
         DataInputStream DIS = new DataInputStream(inputStream);
 
         byte[] byteArrayShort1 = DIS.readNBytes(2);
-        //System.out.println("WS 1st 2 bytes: " + byteArrayShort1);
 
         Byte zeroByte = byteArrayShort1[0];
         // System.out.println(zeroByte);
@@ -70,7 +69,7 @@ public class WebSocketHelper {
         //somehow determine
 
         byte payloadLengthChecker = (byte) (firstByte & 0x7F);
-       // System.out.println("payload length: " + payloadLengthChecker);
+
         //if length is 125 or less, length is just found in B1 here
         if (payloadLengthChecker <= 125) {
             finalLength_ = payloadLengthChecker;
@@ -85,10 +84,7 @@ public class WebSocketHelper {
             finalLength_ = byteTwoToNine;
         }
 
-        //System.out.println("is it masked: " + masked_ + " length" + finalLength_);
-
         //if masked is true, read the next four bytes
-
         byte[] decodedArray = new byte[finalLength_];
         if (masked_) {
             //masked array bytes is 4 bytes
@@ -98,151 +94,69 @@ public class WebSocketHelper {
                 //maskedArray[i] = DIS.readNByte();
                 decodedArray[i] = (byte) (encodedArray[i] ^ maskedArray[i % 4]);
             }
-            //System.out.println("masked array: " + maskedArray);
+
         } else {
             decodedArray = DIS.readNBytes(finalLength_);
         }
 
-       // System.out.println("decoded array: " + new String(decodedArray));
-
-
-
         return new String(decodedArray);
-    }
-
-    public static String writeWSMessage(String message, OutputStream outputStream) throws IOException {
-
-        DataOutputStream DOS = new DataOutputStream(outputStream);
-
-        //first byte sending back
-        //FIN and opcode as text message
-        byte firstByte = (byte) 0x81;
-        DOS.write(firstByte);
-
-        int decodedMessage = message.length();
-
-        if (decodedMessage <= 125) {
-            DOS.writeByte(message.length());
-        } else if (decodedMessage == 126) {
-            DOS.write(126);
-            DOS.writeShort(message.length());
-        } else if (decodedMessage == 127) {
-            DOS.write(127);
-            DOS.writeLong(message.length());
-        }
-
-        //System.out.println(message);
-
-        //save message into a string
-        //get the string after "room":
-
-
-        DOS.writeBytes(message);
-
-        DOS.flush();
-
-        return message;
     }
 
 
     //-------------------------UGLY METHODS TO GO THROUGH JSON------------------------------------
-    public static String findRoom(String message) {
+    public static String findTargetValue(String message, String targetKey) {
 
 
         // Step 1: Remove the curly braces from the JSON string
         String jsonContent = message.substring(1, message.length() - 1);
         String[] pairsSplit = jsonContent.split(",");
 
-        String roomName = "";
+        String targetValue = "";
 
         for (String pair : pairsSplit) {
             String[] keyValue = pair.split(":");
             String key = keyValue[0].replaceAll("\"", "").trim();
             String value = keyValue[1].replaceAll("\"", "").trim();
 
-            if (key.equals("room")) {
-                roomName = value;
+            if (key.equals(targetKey)) {
+                targetValue = value;
             }
-
         }
 
-        return roomName;
-    }
-    public static String findMessage(String message){
-
-        // Step 1: Remove the curly braces from the JSON string
-        String jsonContent = message.substring(1, message.length() - 1);
-        String[] pairsSplit = jsonContent.split(",");
-
-        String mMessage = "";
-
-        for (String pair : pairsSplit) {
-            String[] keyValue = pair.split(":");
-            String key = keyValue[0].replaceAll("\"", "").trim();
-            String value = keyValue[1].replaceAll("\"", "").trim();
-
-            if (key.equals("message")) {
-                mMessage = value;
-            }
-
-        }
-
-        return mMessage;
-    }
-
-    public static String findType(String message){
-
-        // Step 1: Remove the curly braces from the JSON string
-        String jsonContent = message.substring(1, message.length() - 1);
-        String[] pairsSplit = jsonContent.split(",");
-
-        String type = "";
-
-        for (String pair : pairsSplit) {
-            String[] keyValue = pair.split(":");
-            String key = keyValue[0].replaceAll("\"", "").trim();
-            String value = keyValue[1].replaceAll("\"", "").trim();
-
-            if (key.equals("type")) {
-                type = value;
-            }
-
-        }
-
-        return type;
-    }
-    public static String findUser(String message){
-
-        // Step 1: Remove the curly braces from the JSON string
-        String jsonContent = message.substring(1, message.length() - 1);
-        String[] pairsSplit = jsonContent.split(",");
-
-        String userName = "";
-
-        for (String pair : pairsSplit) {
-            String[] keyValue = pair.split(":");
-            String key = keyValue[0].replaceAll("\"", "").trim();
-            String value = keyValue[1].replaceAll("\"", "").trim();
-
-            if (key.equals("user")) {
-                 userName = value;
-            }
-
-        }
-
-        return userName;
+        return targetValue;
     }
 }
 
-
-
-
-//then go into other method in web socket helper that will do the bit manipulation::::::
-//for(int i = 0; i < header.length)
-//read rest of header byters based on info from 1st tgwo bytes
-//read payload "join davison mainroom" after it is unmasked
-//get "mainroom" or create if not existed
-//create JSON message "type: join: user: Davison room: mainroom
-//room.sendjson(above message)
-//the room for each loop to every client
-//send json message from above directly to same client that sent it
+//    public static String writeWSMessage(String message, OutputStream outputStream) throws IOException {
+//
+//        DataOutputStream DOS = new DataOutputStream(outputStream);
+//
+//        //first byte sending back
+//        //FIN and opcode as text message
+//        byte firstByte = (byte) 0x81;
+//        DOS.write(firstByte);
+//
+//        int decodedMessage = message.length();
+//
+//        if (decodedMessage <= 125) {
+//            DOS.writeByte(message.length());
+//        } else if (decodedMessage == 126) {
+//            DOS.write(126);
+//            DOS.writeShort(message.length());
+//        } else if (decodedMessage == 127) {
+//            DOS.write(127);
+//            DOS.writeLong(message.length());
+//        }
+//
+//        //System.out.println(message);
+//
+//        //save message into a string
+//        //get the string after "room":
+//
+//
+//        DOS.writeBytes(message);
+//
+//        DOS.flush();
+//
+//        return message;
+//    }

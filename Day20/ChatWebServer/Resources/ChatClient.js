@@ -26,7 +26,7 @@ ws.onopen = function (){
   wsOpen = true;
 }
 
-//---------------------------------------ON MESSAGE------------------------------------
+  //---------------------------------------ON MESSAGE------------------------------------
 ws.onmessage = function (e) {
   //JSON from server to parse through the string
   //console.log("Message Sai :: "+e.data);
@@ -35,14 +35,19 @@ ws.onmessage = function (e) {
   //pargraph element for the message field of the app
   let msg = document.createElement("p");
 
+
+  //-------------------------------------join----------------------------------------------
+
   //if statement to check the type of data and ensure that a user and room is enterted in their fields
   if (data.type === "join" && data.user !== "" && data.room !== "") {
     // Create a <p> element for the user
-    let users = document.createElement("p");
-    users.textContent = data.user;
+    let user = document.createElement("p");
+
+    user.textContent = data.user;
+    user.setAttribute("id", data.user);
 
     // Add the 'users' element to the 'UsersDiv'
-    UsersDiv.appendChild(users);
+    UsersDiv.appendChild(user);
     msg.textContent = data.user + " joined: " +data.room;
 
     // Save the user's name to 'userNamesList'
@@ -50,61 +55,26 @@ ws.onmessage = function (e) {
     console.log(userNamesList);
   }
 
-
-      // Set the text content of the msg element to the user and entering the room
-    //--------------------------------------------------------------------------
-    //   userNamesList.push(data.user);
-    //
-    //   // Add usernames to UsersDiv
-    //   for (let i = 0; i < userNamesList.length; i++) {
-    //     msg.textContent = data.user + " joined: " + data.room;
-    //     let user = userNamesList[i];
-    //     let userElement = document.createElement('p');
-    //     userElement.textContent = user;
-    //     UsersDiv.appendChild(userElement);
-    //   }
-    //
-    //   console.log("name list " + userNamesList.toString());
-    //
-    // }
-    //---------------------------------------------------------------------------
-
-    // Set the text content of the 'users' element to the name of the user
-
-    // Output 'userNamesList' for debugging
-
-//-------------------------------------------------------------------------------
-  // if (data.type === "join" && data.user != "" && data.room != "") {
-  //   //users element for the users field of the app
-  //   let users = document.createElement("p");
-  //
-  //   //sets the text content of msg element to the user and entering the room
-  //   msg.textContent = data.user + " joined: " + data.room;
-  //
-  //   //setting the text content of users to the name of the user
-  //   users.textContent = data.user;
-  //   //saving the user id as the data.user
-  //   users.id = data.user;
-  //   //adding the users to the users div
-  //   //sending back to client
-  //   userNamesList.push(users.textContent);
-  //   console.log("name list " + userNamesList.toString());
-  //
-  //   for (let i = 0; i <= userNamesList.length; i++) {
-  //   UsersDiv.appendChild(userNamesList[i]);
-  //   }
-
-
-      //-----------------------------------messages------------------------------------------------
+  //-----------------------------------messages------------------------------------------------
 
   //if data from JSON is a message
   //makes so it empty messages cannot be sent
  else if (data.type === "message" && data.message != null && data.user != null) {
     //text content is the output onto the chat screen
     msg.textContent =  data.user + ": " + data.message;
+    const timestamp=getCurrentTimestamp();
+
+    let timeText = document.createElement('span');
+
+    //text content
+    timeText.textContent = `[${timestamp}] `;
+    //class in CSS
+    timeText.classList.add('timestamp');
+
+    chatDiv.appendChild(timeText);
   }
 
- //-------------------------------------leaving-----------------------------------------------------
+  //-------------------------------------leaving-----------------------------------------------------
 
   //if data from the JSON is leave
   else if (data.type === "leave"){
@@ -118,11 +88,12 @@ ws.onmessage = function (e) {
 
     }
 
-
   }
 
   //sending the message type back to the client by appending the child
   chatDiv.appendChild(msg);
+
+
 }
 
 //-------------------------------------METHODS-------------------------------------------
@@ -163,8 +134,22 @@ function handleKeyPressForJoinRoom(e){
   }
 }
 
-function handleClickJoinRoom(e){
-  handleKeyPressForJoinRoom(e.keyCode.type(13));
+function handleClickJoinRoom() {
+  if (!wsOpen) {
+    console.log("WebSocket is not open yet...");
+  } else {
+    const name = roomName.value;
+    const lowercaseLetters = /^[a-z]+$/;
+
+    if (!lowercaseLetters.test(name) || name.includes(' ')) {
+      alert("Your room name must contain only lowercase letters (and no spaces).");
+    } else {
+      let joinJSON = {"type": "join", "user": userName.value, "room": roomName.value};
+      ws.send(JSON.stringify(joinJSON));
+      userName.readOnly = true;
+      roomName.readOnly = true;
+    }
+  }
 }
 
 function handleSendMessageEnter(e){
@@ -222,6 +207,14 @@ function handleEscape(e){
 //removing any text from the chat and user fields
   UsersDiv.innerHTML = "";
   chatDiv.innerHTML = "you left the room";
+}
+
+function getCurrentTimestamp() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  return `${hours}:${minutes}:${seconds}`;
 }
 
 

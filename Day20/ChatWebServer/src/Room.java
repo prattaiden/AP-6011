@@ -1,5 +1,6 @@
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,33 +19,20 @@ public class Room {
 
    private ArrayList<String> userHistory = new ArrayList<>();
 
-   private boolean historySent = false;
+    //constructor
+    private Room( String name ) {
+        roomName_ = name;
+    }
 
-
-   //history and contains -----
     //if username is already in the array list UserNAmes
     public boolean containsUser(String userName){
         return userNAmes.contains(userName);
-    }
-
-    public void markHistorySent(){
-        historySent = true;
-    }
-
-    public void unMarkHistorySent(){
-        historySent = false;
-    }
-
-    public boolean isHistorySent(){
-        return historySent;
     }
 
    //getter methods -------------------------
     public ArrayList<String> getMessageHistory(){
         return messageHistory;
     }
-
-    public ArrayList<String> getUsersHistory(){return userHistory;}
 
     public ArrayList<Socket> getClientSockets(){
         return clientSockets;
@@ -66,30 +54,20 @@ public class Room {
     }
 
 
-    //adding and removing from the SOCKET array list of clients--------------
-    public synchronized void addClient(Socket client) {
+    //---------------------------adding and removing from the SOCKET array list of clients--------------------
+    public synchronized void addClient(Socket client, String userName) {
         clientSockets.add(client);
+        userNAmes.add(userName);
         //System.out.println("user added" + clientSockets);
     }
 
-    public synchronized void removeClient(Socket client) {
+    public synchronized void removeClient(Socket client, String userName) {
         clientSockets.remove(client);
+        userNAmes.remove(userName);
         //System.out.println("user removed" + clientSockets);
     }
 
-
-    //adding and removing from the STRING array list of clients
-    public  void addUserName(String userName) {
-        userNAmes.add(userName);
-        System.out.println("user name added: " + userName);
-    }
-
-    public  void removeUserName(String userName) {
-        userNAmes.remove(userName);
-        System.out.println("user name removed: " + userName);
-    }
-
-    //MESSAGES
+    //--------------------------------------------MESSAGES-------------------------------------------
     public synchronized void addMessage(String message){
         messageHistory.add(message);
     }
@@ -99,42 +77,41 @@ public class Room {
         userHistory.add(Users);
     }
 
+    public synchronized void constructMSG(String msg, DataOutputStream dos) throws IOException {
+
+        byte firstByte = (byte) 0x81;
+        dos.write(firstByte);
+
+        int decodedMessage = msg.length();
+
+        if (decodedMessage <= 125) {
+            dos.writeByte(msg.length());
+        } else if (decodedMessage == 126) {
+            dos.write(126);
+            dos.writeShort(msg.length());
+        } else if (decodedMessage == 127) {
+            dos.write(127);
+            dos.writeLong(msg.length());
+        }
+
+        dos.writeBytes(msg);
+        dos.flush();
+
+    }
+    public synchronized void sendMessageToClient(String msg, Socket client) throws IOException {
+        OutputStream outputStream = client.getOutputStream();
+        DataOutputStream dos = new DataOutputStream(outputStream);
+
+        constructMSG(msg, dos);
+
+              }
+
     public synchronized void sendMessage(String msg) throws IOException {
         System.out.println("number of users to send to: " + clientSockets.size());
         for (Socket c : clientSockets) {
-
             DataOutputStream dos = new DataOutputStream(c.getOutputStream());
-
-            //first byte sending back
-            //FIN and opcode as text message
-            byte firstByte = (byte) 0x81;
-            dos.write(firstByte);
-
-            int decodedMessage = msg.length();
-
-            if (decodedMessage <= 125) {
-                dos.writeByte(msg.length());
-            } else if (decodedMessage == 126) {
-                dos.write(126);
-                dos.writeShort(msg.length());
-            } else if (decodedMessage == 127) {
-                dos.write(127);
-                dos.writeLong(msg.length());
-            }
-//
-//            save message into a string
-//            get the string after "room":
-
-
-            dos.writeBytes(msg);
-            c.getOutputStream().flush();
+            constructMSG(msg, dos);
         }
-    }
-
-
-    //constructor
-    private Room( String name ) {
-        roomName_ = name;
     }
 
 

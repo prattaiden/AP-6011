@@ -28,10 +28,13 @@ public class MainActivity extends AppCompatActivity {
         String roomName = String.valueOf(RoomET.getText());
         String userName = String.valueOf(UserET.getText());
 
-        Intent intent = new Intent(this, ChatRoomActivity.class);
+        Intent intent = new Intent(this, ChatRoom2Activity.class);
         intent.putExtra(roomNameKey, roomName);
         intent.putExtra(userNameKey, userName);
         startActivity(intent);
+
+        //send a join request
+        //ChatRoom2Activity.ws_.sendText;
 
 
 

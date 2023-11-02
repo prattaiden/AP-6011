@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="false"
-    tools:context=".ChatRoomActivity">
+    tools:context=".OLD">
 
     <TextView
         android:id="@+id/roomNameField"
@@ -37,10 +37,12 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="315dp"
-        android:layout_height="422dp"
+        android:layout_width="330dp"
+        android:layout_height="308dp"
+        android:background="#EDBABA"
         app:layout_constraintBottom_toBottomOf="@id/ChatEdit"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.388"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UserNameField"
         app:layout_constraintVertical_bias="0.143">
@@ -64,24 +66,26 @@
         android:text="Send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.871"
+        app:layout_constraintHorizontal_bias="0.808"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.457" />
+        app:layout_constraintVertical_bias="0.45" />
 
     <EditText
         android:id="@+id/ChatEdit"
-        android:layout_width="103dp"
-        android:layout_height="51dp"
+        android:layout_width="192dp"
+        android:layout_height="71dp"
         android:layout_marginStart="16dp"
-        android:hint="enter message"
+        android:hint="chat..."
         android:minHeight="48dp"
         android:text=" "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/SendButtonID"
+        app:layout_constraintHorizontal_bias="0.319"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
         app:layout_constraintVertical_bias="0.457"
         tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
